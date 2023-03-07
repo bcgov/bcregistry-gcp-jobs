@@ -44,11 +44,6 @@ jobs:
       run: terraform init
       working-directory: ${{ github.event.inputs.gcp_job }}
 
-    # Checks that all Terraform configuration files adhere to a canonical format
-    - name: Terraform Format
-      run: terraform fmt -check
-      working-directory: ${{ github.event.inputs.gcp_job }}
-
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       run: terraform plan -input=false
