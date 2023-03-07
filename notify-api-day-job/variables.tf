@@ -20,6 +20,7 @@ variable "notify_api_job" {
     subdir                 = string
     registry_repo          = string
     tag                    = string
+    vault                  = string
   })
   description = "Notify API resend job"
 
@@ -30,7 +31,8 @@ variable "notify_api_job" {
     github_repository = "bcregistry-gcp-jobs"
     github_branch = "^main$"
     subdir     = "notify-api-day-job"
-    tag        = "dev"
+    tag        = "latest"
+    vault     = "dev"
   }
 }
 

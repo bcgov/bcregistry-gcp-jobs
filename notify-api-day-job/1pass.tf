@@ -9,12 +9,12 @@ data "onepassword_vault" "keycloak" {
 
 data "onepassword_item" "keycloak_env" {
   vault = data.onepassword_vault.keycloak.uuid
-  title = var.notify_api_job.tag
+  title = var.notify_api_job.vault
 }
 
 data "onepassword_item" "api_env" {
   vault = data.onepassword_vault.api.uuid
-  title = var.notify_api_job.tag
+  title = var.notify_api_job.vault
 }
 
 locals {
