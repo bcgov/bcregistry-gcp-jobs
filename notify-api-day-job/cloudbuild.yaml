@@ -1,0 +1,4 @@
+steps:
+- name: "gcr.io/cloud-builders/docker"
+  args: ["build","-t", "us-west2-docker.pkg.dev/${PROJECT_ID}/sre-repo/notify-api-day-job-image:${_SHORT_SHA}", "-t", "us-west2-docker.pkg.dev/${PROJECT_ID}/sre-repo/notify-api-day-job-image:${_TAG}", "."]
+images: ["us-west2-docker.pkg.dev/${PROJECT_ID}/sre-repo/notify-api-day-job-image:${_TAG}"]
