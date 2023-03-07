@@ -1,11 +1,13 @@
 variable "environment" {
   type = object({
     project_id     = string
+    sa             = string
   })
   description = "GCP project parameters"
 
   default = {
     project_id      = "c4hnrd-dev"
+    sa              = "terraform-sa"
   }
 }
 
