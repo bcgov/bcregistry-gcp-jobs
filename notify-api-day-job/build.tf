@@ -24,5 +24,5 @@ resource "google_cloudbuild_trigger" "notify-api-job-trigger" {
   }
 
   filename = "cloudbuild.yaml"
-  included_files = ["${var.notify_api_job.subdir}/"]
+  included_files = ["${var.notify_api_job.subdir}/**"]
 }
