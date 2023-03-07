@@ -28,7 +28,6 @@ def notify_api_run():
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': f'Basic {basic_hash}'
     }
-
     response = requests.request("POST", kc_url, headers=headers, data=payload)
     token = response.json()['access_token']
 
@@ -36,7 +35,6 @@ def notify_api_run():
         'Content-Type': 'application/json',
         'Authorization': f'Bearer {token}'
     }
-
     url = notify_base_url + "/api/v2/notify/resend"
     response = requests.request("POST", url, headers=headers)
     print(response.status_code)

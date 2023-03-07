@@ -20,7 +20,8 @@ steps:
         echo "no such file"
         continue
        fi
-       gcloud builds submit $line --config=${config} --substitutions _SHORT_SHA=$SHORT_SHA,_TAG=dev
+       echo ${PROJECT_ID#*-}
+       gcloud builds submit $line --config=${config} --substitutions _SHORT_SHA=$SHORT_SHA,_TAG=${PROJECT_ID#*-}
        done < /workspace/diff.txt
 options:
  logging: CLOUD_LOGGING_ONLY

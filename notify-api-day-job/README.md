@@ -1,1 +1,1 @@
-Resend Notify Api failed email notifications
+Resend Notify Api failed email notifications.
