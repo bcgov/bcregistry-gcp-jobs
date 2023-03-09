@@ -2,7 +2,7 @@ terraform {
   cloud {
     organization = "BCRegistry"
     workspaces {
-      name = "gcp-notify-api-job-dev"
+      name = "reindex-auth-db-job-dev"
     }
   }
 }
