@@ -1,0 +1,55 @@
+name: 'Retag Build'
+
+on:
+  workflow_dispatch:
+    inputs:
+      gcp_job:
+        description: 'Directory of the job to redeploy'
+        required: true
+        default: ''
+      gcp_tag:
+        description: 'test: test tag is added to current dev tag, prod: prod is added to current test tag'
+        required: true
+        default: 'test'
+
+permissions:
+  contents: read
+
+env:
+  PROJECT: 'c4hnrd-dev'
+  LOCATION: 'us-west2'
+  REPO: 'sre-repo'
+
+jobs:
+  terraform:
+    name: 'Retag Build'
+    runs-on: ubuntu-latest
+    environment: production
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: 'Authenticate to Google Cloud'
+      id: 'auth'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCP_TOKEN }}'
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v1'
+      with:
+        version: '>= 363.0.0'
+
+    - name: Tag
+      run: |-
+        if [[ ${{ github.event.inputs.gcp_tag }} == 'test' ]]; then
+          gcloud artifacts docker tags add \
+          ${{ env.LOCATION }}-docker.pkg.dev/${{ env.PROJECT }}/${{ env.REPO }}/${{ github.event.inputs.gcp_job }}-image:dev \
+          ${{ env.LOCATION }}-docker.pkg.dev/${{ env.PROJECT }}/${{ env.REPO }}/${{ github.event.inputs.gcp_job }}-image:test
+        elif [[ ${{ github.event.inputs.gcp_tag }} == 'prod' ]]; then
+          gcloud artifacts docker tags add \
+          ${{ env.LOCATION }}-docker.pkg.dev/${{ env.PROJECT }}/${{ env.REPO }}/${{ github.event.inputs.gcp_job }}-image:test \
+          ${{ env.LOCATION }}-docker.pkg.dev/${{ env.PROJECT }}/${{ env.REPO }}/${{ github.event.inputs.gcp_job }}-image:prod
+        fi
