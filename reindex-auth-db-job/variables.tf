@@ -26,7 +26,7 @@ variable "job" {
 
   default = {
     name       = "reindex-auth-db-job"
-    image      = "reindex-auth-db-job-image"
+    image      = "reindex-db-job-image"
     registry_repo = "sre-repo"
     github_repository = "bcregistry-gcp-jobs"
     github_owner = "bcgov"
