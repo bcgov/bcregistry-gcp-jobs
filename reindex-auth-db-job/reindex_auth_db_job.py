@@ -13,13 +13,15 @@
 # limitations under the License.
 import psycopg2
 import os
-
+import time
 
 def reindex_db():
     db_name = os.environ['DB_NAME']
     db_port = os.environ['DB_PORT']
     db_host = os.environ['DB_HOST']
     db_user = os.environ['DB_USER']
+
+    time.sleep(5)
 
     conn = psycopg2.connect(user=db_user,
                             host=db_host,
@@ -29,6 +31,7 @@ def reindex_db():
     select_q = "select * from users;"
     cur.execute(select_q)
     target_users = cur.fetchall()
+    print(target_users)
     conn.commit()
     cur.close()
 
