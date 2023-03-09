@@ -15,6 +15,7 @@ variable "job" {
   type = object({
     name                   = string
     image                  = string
+    trigger                = string
     github_repository      = string
     github_owner           = string
     github_branch          = string
@@ -27,6 +28,7 @@ variable "job" {
   default = {
     name       = "reindex-auth-db-job"
     image      = "reindex-db-job-image"
+    trigger    = "reindex-db-job"
     registry_repo = "sre-repo"
     github_repository = "bcregistry-gcp-jobs"
     github_owner = "bcgov"

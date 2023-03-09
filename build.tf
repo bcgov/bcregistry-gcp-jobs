@@ -4,7 +4,7 @@ data "google_artifact_registry_repository" "job_repo" {
 }
 
 resource "google_cloudbuild_trigger" "trigger" {
-  name        = var.job.name
+  name        = var.job.trigger
   location = var.region
 
   trigger_template {
