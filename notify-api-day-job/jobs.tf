@@ -6,7 +6,7 @@ resource "google_cloud_run_v2_job" "job" {
   template {
     template {
       containers {
-        image = "${var.region}-docker.pkg.dev/${var.environment.project_id}/${var.job.registry_repo}/${var.job.image}:${var.job.tag}"
+        image = "${var.region}-docker.pkg.dev/c4hnrd-dev/${var.job.registry_repo}/${var.job.image}:${var.job.tag}"
         env {
           name = "NOTIFY_CLIENT"
           value = local.client
