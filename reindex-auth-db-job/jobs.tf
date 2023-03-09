@@ -28,19 +28,14 @@ resource "google_cloud_run_v2_job" "job" {
           value = var.db_connection.oc_server
         }
         env {
+          name = "OC_NAMESPACE"
+          value = local.oc_namespace
+        }
+        env {
           name = "OC_TOKEN"
           value_source {
             secret_key_ref {
               secret = google_secret_manager_secret_version.oc_token_version.secret
-              version = "1"
-            }
-          }
-        }
-        env {
-          name = "OC_NAMESPACE"
-          value_source {
-            secret_key_ref {
-              secret = google_secret_manager_secret_version.oc_namespace_version.secret
               version = "1"
             }
           }
