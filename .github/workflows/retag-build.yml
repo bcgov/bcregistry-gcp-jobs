@@ -4,13 +4,19 @@ on:
   workflow_dispatch:
     inputs:
       gcp_job:
-        description: 'Directory of the job to redeploy'
         required: true
-        default: ''
+        type: choice
+        description: 'Directory of the job to (re-)deploy'
+        options:
+        - notify-api-day-job
+        - reindex-auth-db
       gcp_tag:
-        description: 'test: test tag is added to current dev tag, prod: prod is added to current test tag'
         required: true
-        default: 'test'
+        type: choice
+        description: 'test tag is added to current dev tag / prod is added to current test tag'
+        options:
+        - test
+        - prod
 
 permissions:
   contents: read
