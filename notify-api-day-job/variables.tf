@@ -11,16 +11,16 @@ variable "environment" {
   }
 }
 
-variable "notify_api_job" {
+variable "job" {
   type = object({
     name                   = string
     image                  = string
     github_repository      = string
+    github_owner           = string
     github_branch          = string
     subdir                 = string
     registry_repo          = string
     tag                    = string
-    vault                  = string
   })
   description = "Notify API resend job"
 
@@ -29,17 +29,13 @@ variable "notify_api_job" {
     image      = "notify-api-day-job-image"
     registry_repo = "sre-repo"
     github_repository = "bcregistry-gcp-jobs"
-    github_branch = "^main$"
+    github_owner = "bcgov"
+    github_branch = "main"
     subdir     = "notify-api-day-job"
-    tag        = "latest"
-    vault     = "dev"
+    tag        = "dev"
   }
 }
 
 variable "region" {
     default = "us-west2"
-}
-
-variable "github_owner" {
-    default = "bcgov"
 }
