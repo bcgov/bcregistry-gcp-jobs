@@ -37,6 +37,10 @@ jobs:
       working-directory: ${{ github.event.inputs.gcp_job }}
       run: sed -i 's/dev/${{ github.event.inputs.gcp_env }}/g' variables.tf; sed -i 's/dev/${{ github.event.inputs.gcp_env }}/g' main.tf
 
+    - name: Decide whether to set up build trigger
+      if: ${{ github.event.inputs.gcp_env == 'dev' }}
+      run: mv build.tf ${{ github.event.inputs.gcp_job }}
+
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
