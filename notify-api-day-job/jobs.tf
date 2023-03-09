@@ -1,12 +1,12 @@
-resource "google_cloud_run_v2_job" "notify_api_job" {
-  name     = var.notify_api_job.name
+resource "google_cloud_run_v2_job" "job" {
+  name     = var.job.name
   location = var.region
   launch_stage = "BETA"
 
   template {
     template {
       containers {
-        image = "${var.region}-docker.pkg.dev/${var.environment.project_id}/${var.notify_api_job.registry_repo}/${var.notify_api_job.image}:${var.notify_api_job.tag}"
+        image = "${var.region}-docker.pkg.dev/${var.environment.project_id}/${var.job.registry_repo}/${var.job.image}:${var.job.tag}"
         env {
           name = "NOTIFY_CLIENT"
           value = local.client
@@ -33,8 +33,8 @@ resource "google_cloud_run_v2_job" "notify_api_job" {
   }
 }
 
-resource "google_cloud_scheduler_job" "notify_api_scheduler" {
-  name             = "notify_api_scheduler"
+resource "google_cloud_scheduler_job" "scheduler" {
+  name             = var.job.name
   schedule         = "0 0 * * *"
   time_zone        = "America/Vancouver"
   attempt_deadline = "320s"
@@ -44,7 +44,7 @@ resource "google_cloud_scheduler_job" "notify_api_scheduler" {
   }
   http_target {
     http_method = "POST"
-    uri         = "https://${var.region}-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/${var.environment.project_id}/jobs/${var.notify_api_job.name}:run"
+    uri         = "https://${var.region}-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/${var.environment.project_id}/jobs/${var.job.name}:run"
     oauth_token {
       service_account_email = "${var.environment.sa}@${var.environment.project_id}.iam.gserviceaccount.com"
       scope = "https://www.googleapis.com/auth/cloud-platform"
