@@ -31,7 +31,7 @@ variable "job" {
     github_repository = "bcregistry-gcp-jobs"
     github_owner = "bcgov"
     github_branch = "main"
-    subdir     = "reindex-auth-db-job"
+    subdir     = "reindex-db-job"
     tag        = "dev"
   }
 }
