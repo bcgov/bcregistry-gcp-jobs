@@ -14,7 +14,6 @@ on:
         description: 'Namespace suffix: one of dev/test/prod'
         required: true
         type: choice
-        description: 'test tag is added to current dev tag / prod is added to current test tag'
         options:
         - env
         - test
