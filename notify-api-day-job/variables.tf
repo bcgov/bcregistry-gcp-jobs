@@ -14,7 +14,6 @@ variable "environment" {
 variable "job" {
   type = object({
     name                   = string
-    image                  = string
     github_repository      = string
     github_owner           = string
     github_branch          = string
@@ -27,7 +26,6 @@ variable "job" {
 
   default = {
     name       = "notify-api-day-job"
-    image      = "notify-api-day-job-image"
     trigger    = "notify-api-day-job"
     registry_repo = "sre-repo"
     github_repository = "bcregistry-gcp-jobs"

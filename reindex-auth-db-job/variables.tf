@@ -14,12 +14,10 @@ variable "environment" {
 variable "job" {
   type = object({
     name                   = string
-    image                  = string
     trigger                = string
     github_repository      = string
     github_owner           = string
     github_branch          = string
-    subdir                 = string
     registry_repo          = string
     tag                    = string
   })
@@ -27,13 +25,11 @@ variable "job" {
 
   default = {
     name       = "reindex-auth-db-job"
-    image      = "reindex-db-job-image"
     trigger    = "reindex-db-job"
     registry_repo = "sre-repo"
     github_repository = "bcregistry-gcp-jobs"
     github_owner = "bcgov"
     github_branch = "main"
-    subdir     = "reindex-db-job"
     tag        = "dev"
   }
 }
@@ -41,7 +37,6 @@ variable "job" {
 variable "region" {
     default = "us-west2"
 }
-
 
 variable "db_connection" {
   type = object({

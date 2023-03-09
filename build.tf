@@ -1,5 +1,5 @@
 data "google_artifact_registry_repository" "job_repo" {
-    repository_id = "sre-repo"
+    repository_id = var.job.registry_repo
     location = var.region
 }
 
@@ -16,9 +16,9 @@ resource "google_cloudbuild_trigger" "trigger" {
     _LOCATION = var.region
     _REGISTRY_REPO = var.job.registry_repo
     _TAG = "dev"
-    _IMAGE = var.job.image
+    _IMAGE = "${var.job.trigger}-image"
   }
 
   filename = "cloudbuild.yaml"
-  included_files = ["${var.job.subdir}/**"]
+  included_files = ["${var.job.trigger}/**"]
 }
