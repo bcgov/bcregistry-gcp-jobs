@@ -9,13 +9,13 @@ on:
         description: 'Directory of the job to (re-)deploy'
         options:
         - notify-api-day-job
-        - reindex-auth-db
+        - reindex-auth-db-job
       gcp_env:
         description: 'Namespace suffix: one of dev/test/prod'
         required: true
         type: choice
         options:
-        - env
+        - dev
         - test
         - prod
 

@@ -38,8 +38,7 @@ def notify_api_run():
     url = notify_base_url + "/api/v2/notify/resend"
     response = requests.request("POST", url, headers=headers)
     print(response.status_code)
-    print(response.text)
-
+    print(response)
 
 if __name__ == '__main__':
     notify_api_run()
