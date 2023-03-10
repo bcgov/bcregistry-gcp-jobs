@@ -20,7 +20,7 @@ steps:
           echo "no such file"
           continue
         fi
-        gcloud builds submit $line --config=${config} --substitutions _SHORT_SHA=$SHORT_SHA,_IMAGE=$_IMAGE,_LOCATION=$_LOCATION,_REGISTRY_REPO=$_REGISTRY_REPO,_TAG=dev
+        gcloud builds submit $line --config=${config} --substitutions _SHORT_SHA=$SHORT_SHA,_TAG=dev
       done < /workspace/diff.txt
 options:
  logging: CLOUD_LOGGING_ONLY
