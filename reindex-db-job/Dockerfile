@@ -1,4 +1,4 @@
-FROM python:3.8.5-buster
+FROM python:3.10-slim-buster
 USER root
 
 ARG VCS_REF="missing"
