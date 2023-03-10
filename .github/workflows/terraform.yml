@@ -10,6 +10,7 @@ on:
         options:
         - notify-api-day-job
         - reindex-auth-db-job
+        - build-triggers
       gcp_env:
         description: 'Namespace suffix: one of dev/test/prod'
         required: true
