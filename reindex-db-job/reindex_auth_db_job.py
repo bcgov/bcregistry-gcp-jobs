@@ -21,19 +21,26 @@ def reindex_db():
     db_host = os.environ['DB_HOST']
     db_user = os.environ['DB_USER']
 
+    # wait for port forward
     time.sleep(5)
 
-    conn = psycopg2.connect(user=db_user,
-                            host=db_host,
-                            port=db_port,
-                            dbname=db_name)
-    cur = conn.cursor()
-    select_q = "select * from users;"
-    cur.execute(select_q)
-    target_users = cur.fetchall()
-    print(target_users)
-    conn.commit()
-    cur.close()
+    ret = 0
+    try:
+        connection = psycopg2.connect(user=db_user,
+                                host=db_host,
+                                port=db_port,
+                                dbname=db_name)
+        connection.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
+        with connection.cursor() as cursor:
+            cursor.execute("REINDEX DATABASE \"{0}\";".format(db_name))
+    except Exception as error:
+        print ("Exception:", error)
+        print ("Exception TYPE:", type(error))
+        ret = 1
+    finally:
+        if connection:
+            connection.close()
+        return ret
 
 
 if __name__ == '__main__':
