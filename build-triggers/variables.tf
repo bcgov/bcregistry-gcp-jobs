@@ -15,7 +15,7 @@ variable "jobs" {
     name                   = string
     trigger                = string
   }))
-  description = "Notify API resend job"
+  description = "Builds for jobs"
 
   default = [
     { name       = "notify-api-day-job"

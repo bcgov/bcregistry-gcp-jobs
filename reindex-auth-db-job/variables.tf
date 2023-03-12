@@ -2,40 +2,56 @@ variable "environment" {
   type = object({
     project_id     = string
     sa             = string
+    tag            = string
   })
   description = "GCP project parameters"
 
   default = {
     project_id      = "c4hnrd-dev"
     sa              = "terraform-sa"
+    tag             = "dev"
   }
 }
 
-variable "job" {
-  type = object({
+variable "jobs" {
+  type = list(object({
     name                   = string
     trigger                = string
-    github_repository      = string
-    github_owner           = string
-    github_branch          = string
-    registry_repo          = string
-    tag                    = string
-  })
+    vault_section          = string
+  }))
+
   description = "Notify API resend job"
 
-  default = {
-    name       = "reindex-auth-db-job"
-    trigger    = "reindex-db-job"
-    registry_repo = "sre-repo"
-    github_repository = "bcregistry-gcp-jobs"
-    github_owner = "bcgov"
-    github_branch = "main"
-    tag        = "dev"
-  }
+  default = [
+    {
+      name          = "reindex-auth-db-job"
+      trigger       = "reindex-db-job"
+      vault_section = "auth-db2"
+    },
+    {
+      name          = "reindex-pay-db-job"
+      trigger       = "reindex-db-job"
+      vault_section = "pay-db2"
+    },
+    {
+      name          = "reindex-namex-db-job"
+      trigger       = "reindex-db-job"
+      vault_section = "namex-db2"
+    },
+    {
+      name          = "reindex-lear-db-job"
+      trigger       = "reindex-db-job"
+      vault_section = "entity-db2"
+    }
+  ]
 }
 
 variable "region" {
     default = "us-west2"
+}
+
+variable "registry_repo" {
+    default = "sre-repo"
 }
 
 variable "db_connection" {
