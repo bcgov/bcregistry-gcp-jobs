@@ -9,7 +9,7 @@ on:
         description: 'Directory of the job to (re-)deploy'
         options:
         - notify-api-day-job
-        - reindex-auth-db-job
+        - reindex-db-job
         - build-triggers
       gcp_env:
         description: 'Namespace suffix: one of dev/test/prod'
