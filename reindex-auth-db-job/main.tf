@@ -2,7 +2,7 @@ terraform {
   cloud {
     organization = "BCRegistry"
     workspaces {
-      name = "reindex-auth-db-job-dev"
+      name = "reindex-db-job-dev"
     }
   }
 }
