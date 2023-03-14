@@ -43,7 +43,7 @@ jobs:
 
     - name: Apply env
       working-directory: ${{ github.event.inputs.gcp_job }}
-      run: sed -i 's/dev/${{ github.event.inputs.gcp_env }}/g' variables.tf; sed -i 's/dev/${{ github.event.inputs.gcp_env }}/g' main.tf
+      run: sed -i 's/dev"/${{ github.event.inputs.gcp_env }}"/g' variables.tf; sed -i 's/dev"/${{ github.event.inputs.gcp_env }}"/g' main.tf
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
