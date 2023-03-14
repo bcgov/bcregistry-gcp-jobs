@@ -32,7 +32,16 @@ def reindex_db():
                                 dbname=db_name)
         connection.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
         with connection.cursor() as cursor:
-            cursor.execute("REINDEX DATABASE \"{0}\";".format(db_name))
+            cursor.execute("select version();")
+            version_result = cursor.fetchall()
+            version_str = version_result[0][0
+            # remove this check once auth-db in dev is no longer using postgres 10
+            if "PostgreSQL 10" in version_str:
+                cursor.execute("REINDEX DATABASE \"{0}\";".format(db_name))
+            else:
+                cursor.execute("REINDEX (VERBOSE) DATABASE CONCURRENTLY \"{0}\";".format(db_name))
+                for notice in connection.notices:
+                    print(notice)
     except Exception as error:
         print ("Exception:", error)
         print ("Exception TYPE:", type(error))
