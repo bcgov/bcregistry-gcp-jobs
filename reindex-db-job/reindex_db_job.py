@@ -34,7 +34,7 @@ def reindex_db():
         with connection.cursor() as cursor:
             cursor.execute("select version();")
             version_result = cursor.fetchall()
-            version_str = version_result[0][0
+            version_str = version_result[0][0]
             # remove this check once auth-db in dev is no longer using postgres 10
             if "PostgreSQL 10" in version_str:
                 cursor.execute("REINDEX DATABASE \"{0}\";".format(db_name))
