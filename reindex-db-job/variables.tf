@@ -20,7 +20,7 @@ variable "jobs" {
     vault_section          = string
   }))
 
-  description = "Notify API resend job"
+  description = "OpenShift database reindexing jobs"
 
   default = [
     {
