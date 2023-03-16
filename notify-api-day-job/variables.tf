@@ -26,7 +26,7 @@ variable "job" {
   default = {
     name       = "notify-api-day-job"
     trigger    = "notify-api-day-job"
-    registry_repo = "sre-repo"
+    registry_repo = "job-repo"
     github_repository = "bcregistry-gcp-jobs"
     github_owner = "bcgov"
     github_branch = "main"
@@ -35,5 +35,5 @@ variable "job" {
 }
 
 variable "region" {
-    default = "us-west2"
+    default = "northamerica-northeast1"
 }

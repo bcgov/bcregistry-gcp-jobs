@@ -41,9 +41,9 @@ variable "github" {
 }
 
 variable "registry_repo" {
-    default = "sre-repo"
+    default = "job-repo"
 }
 
 variable "region" {
-    default = "us-west2"
+    default = "northamerica-northeast1"
 }

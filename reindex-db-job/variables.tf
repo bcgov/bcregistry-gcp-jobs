@@ -47,11 +47,11 @@ variable "jobs" {
 }
 
 variable "region" {
-    default = "us-west2"
+    default = "northamerica-northeast1"
 }
 
 variable "registry_repo" {
-    default = "sre-repo"
+    default = "job-repo"
 }
 
 variable "db_connection" {
