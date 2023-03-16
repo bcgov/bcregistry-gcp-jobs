@@ -23,8 +23,8 @@ permissions:
 
 env:
   PROJECT: 'c4hnrd-dev'
-  LOCATION: 'us-west2'
-  REPO: 'sre-repo'
+  LOCATION: 'northamerica-northeast1'
+  REPO: 'job-repo'
 
 jobs:
   terraform:
