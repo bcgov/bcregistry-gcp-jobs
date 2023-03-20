@@ -22,6 +22,6 @@ variable "images" {
     "nats-streaming:0.21.2",
     "node:16.14.2",
     "node:14.15.1",
-    "minio/minio:RELEASE.2018-07-13T00-09-07Z"
+    "bitnami/minio:2022.2.5"
   ]
 }
