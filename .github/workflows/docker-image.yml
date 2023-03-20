@@ -1,0 +1,38 @@
+name: Upload Docker Image to GCP Container Registry
+on:
+  workflow_dispatch:
+    inputs:
+      gcp_job:
+        required: true
+        type: choice
+        description: 'Job directory'
+        options:
+        - gcp-container-registry
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        ref: tools
+    - run: touch docker.json && echo "$GCP_REGISTRY_TOKEN" > docker.json
+      shell: bash
+      working-directory: ${{ github.event.inputs.gcp_job }}
+      env:
+        GCP_REGISTRY_TOKEN: ${{secrets.GCP_REGISTRY_TOKEN}}
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      working-directory: ${{ github.event.inputs.gcp_job }}
+      run: terraform init -input=false
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      working-directory: ${{ github.event.inputs.gcp_job }}
+      run: terraform plan -input=false
+      # Build or change infrastructure according to Terraform configuration files
+    - name: Terraform Apply
+      working-directory: ${{ github.event.inputs.gcp_job }}
+      run: terraform apply -auto-approve -input=false
