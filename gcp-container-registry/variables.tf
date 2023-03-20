@@ -21,7 +21,6 @@ variable "images" {
     "nginx:1.18.0",
     "nats-streaming:0.21.2",
     "node:16.14.2",
-    "node:14.15.1",
-    "bitnami/minio:2022.2.5"
+    "node:14.15.1"
   ]
 }
