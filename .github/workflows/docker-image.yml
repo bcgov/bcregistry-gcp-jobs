@@ -22,6 +22,11 @@ jobs:
       working-directory: ${{ github.event.inputs.gcp_job }}
       env:
         GCP_REGISTRY_TOKEN: ${{secrets.GCP_REGISTRY_TOKEN}}
+    - run: touch openshift.key && echo "$OCP_SA_TOKEN" > openshift.key
+      shell: bash
+      working-directory: ${{ github.event.inputs.gcp_job }}
+      env:
+        OCP_SA_TOKEN: ${{secrets.OCP_SA_TOKEN}}
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
