@@ -57,10 +57,6 @@ variable "images" {
       image         = "solr"
       ocp_tag       = ":6.6"
     },
-    # {
-    #   image         = "docker.io/centos/postgresql-12-centos7"
-    #   ocp_tag       = "20200917-804ef01"
-    # },
     {
       image         = "image-registry.apps.silver.devops.gov.bc.ca/d893f6-tools/minio"
       ocp_tag       = "@sha256:6c7d8bac62177e836f88ef991362a02f5b10faa9cb92aeecd2d3f066042ba849"
@@ -84,6 +80,11 @@ variable "images" {
     {
       image         = "image-registry.apps.silver.devops.gov.bc.ca/f2b77c-tools/postgresql-oracle-fdw"
       ocp_tag       = "@sha256:956e7855fe743859d47f7efd00e758c8e8947546119716008e839bed2bce51fe"
+      gcp_tag       = ":backup"
+    },
+    {
+      image         = "image-registry.apps.silver.devops.gov.bc.ca/openshift/postgresql"
+      ocp_tag       = "@sha256:8aa33ef95d093c3eed8ec88274574e09e7654a10cd5827387189694ef3e0c5ad"
       gcp_tag       = ":backup"
     }
   ]
