@@ -4,31 +4,19 @@ terraform {
       source  = "kreuzwerker/docker"
       version = "3.0.2"
     }
-    template = {
-      source = "hashicorp/template"
-      version = "2.2.0"
-    }
   }
-}
-
-data "template_file" "gcp_json" {
-  template = "${file("docker.json")}"
-}
-
-data "template_file" "ocp_key" {
-  template = "${file("openshift.key")}"
 }
 
 provider "docker" {
   registry_auth {
     address  = var.environment.registry
     username = "_json_key"
-    password = "${data.template_file.gcp_json.rendered}"
+    password = var.GCP_REGISTRY_TOKEN
   }
   registry_auth {
-    address  = var.environment.registry
-    username = "github-cicd"
-    password = "${data.template_file.ocp_key.rendered}"
+    address  = var.environment.ocp_registry
+    username = "system-serviceaccount-d893f6-tools-github-cicd"
+    password = var.OCP_SA_TOKEN
   }
 }
 

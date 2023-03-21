@@ -2,13 +2,25 @@ variable "environment" {
   type = object({
     project_id     = string
     registry       = string
+    ocp_registry   = string
   })
   description = "GCP project parameters"
 
   default = {
     project_id      = "c4hnrd-dev"
     registry        = "gcr.io"
+    ocp_registry    = "image-registry.apps.silver.devops.gov.bc.ca"
   }
+}
+
+variable "OCP_SA_TOKEN" {
+    type        = string
+    description = "OpenShift service account dockercfg token"
+}
+
+variable "GCP_REGISTRY_TOKEN" {
+    type        = string
+    description = "GCP service account container registry token"
 }
 
 variable "images" {
