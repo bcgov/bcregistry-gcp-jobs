@@ -56,7 +56,7 @@ variable "images" {
     {
       image         = "solr"
       ocp_tag       = ":6.6"
-    }.
+    },
     {
       image         = "docker.io/centos/postgresql-12-centos7"
       ocp_tag       = "20200917-804ef01"
