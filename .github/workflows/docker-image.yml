@@ -17,16 +17,6 @@ jobs:
       uses: actions/checkout@v3
       with:
         ref: tools
-    - run: touch docker.json && echo "$GCP_REGISTRY_TOKEN" > docker.json
-      shell: bash
-      working-directory: ${{ github.event.inputs.gcp_job }}
-      env:
-        GCP_REGISTRY_TOKEN: ${{secrets.GCP_REGISTRY_TOKEN}}
-    - run: touch openshift.key && echo "$OCP_SA_TOKEN" > openshift.key
-      shell: bash
-      working-directory: ${{ github.event.inputs.gcp_job }}
-      env:
-        OCP_SA_TOKEN: ${{secrets.OCP_SA_TOKEN}}
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
@@ -37,6 +27,9 @@ jobs:
     - name: Terraform Plan
       working-directory: ${{ github.event.inputs.gcp_job }}
       run: terraform plan -input=false
+      env:
+        TF_VAR_OCP_SA_TOKEN: ${{secrets.TF_VAR_OCP_SA_TOKEN}}
+        TF_VAR_GCP_REGISTRY_TOKEN: ${{secrets.TF_VAR_GCP_REGISTRY_TOKEN}}
       # Build or change infrastructure according to Terraform configuration files
     - name: Terraform Apply
       working-directory: ${{ github.event.inputs.gcp_job }}
