@@ -80,11 +80,11 @@ variable "images" {
       image         = "image-registry.apps.silver.devops.gov.bc.ca/f2b77c-tools/namex-solr-base"
       ocp_tag       = "@sha256:1291ad4242474401779f8472314fa42690f0be27534631eea93d41b883fdda7a"
       gcp_tag       = ":backup"
+    },
+    {
+      image         = "image-registry.apps.silver.devops.gov.bc.ca/f2b77c-tools/postgresql-oracle-fdw"
+      ocp_tag       = "@sha256:956e7855fe743859d47f7efd00e758c8e8947546119716008e839bed2bce51fe"
+      gcp_tag       = ":backup"
     }
-    # {
-    #   image         = "image-registry.apps.silver.devops.gov.bc.ca/f2b77c-tools/fdw"
-    #   ocp_tag       = "@sha256:956e7855fe743859d47f7efd00e758c8e8947546119716008e839bed2bce51fe"
-    #   gcp_tag       = ":backup"
-    # }
   ]
 }
