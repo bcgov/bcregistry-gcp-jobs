@@ -27,6 +27,9 @@ jobs:
     - name: Terraform Plan
       working-directory: ${{ github.event.inputs.gcp_job }}
       run: terraform plan -input=false
+      env:
+        TF_VAR_OCP_SA_TOKEN: ${{secrets.TF_VAR_OCP_SA_TOKEN}}
+        TF_VAR_GCP_REGISTRY_TOKEN: ${{secrets.TF_VAR_GCP_REGISTRY_TOKEN}}
       # Build or change infrastructure according to Terraform configuration files
     - name: Terraform Apply
       working-directory: ${{ github.event.inputs.gcp_job }}
