@@ -39,7 +39,7 @@ resource "google_cloud_run_v2_job" "job" {
           name = "OC_TOKEN"
           value_source {
             secret_key_ref {
-              secret = google_secret_manager_secret_version.oc_token_version[each.key].secret
+              secret = data.google_secret_manager_secret_version.oc_token_version[each.key].secret
               version = "1"
             }
           }
@@ -48,7 +48,7 @@ resource "google_cloud_run_v2_job" "job" {
           name = "DB_SVC_NAME"
           value_source {
             secret_key_ref {
-              secret = google_secret_manager_secret_version.oc_svc_version[each.key].secret
+              secret = data.google_secret_manager_secret_version.oc_svc_version[each.key].secret
               version = "1"
             }
           }
