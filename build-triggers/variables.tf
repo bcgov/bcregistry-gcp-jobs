@@ -23,6 +23,9 @@ variable "jobs" {
     },
     { name       = "reindex-auth-db-job"
       trigger    = "reindex-db-job"
+    },
+    { name       = "reports"
+      trigger    = "reports"
     }
   ]
 }
