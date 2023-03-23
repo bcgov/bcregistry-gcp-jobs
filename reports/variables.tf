@@ -35,6 +35,10 @@ variable "region" {
     default = "northamerica-northeast1"
 }
 
+variable "data_dir" {
+  default = "/opt/app-root/data/"
+}
+
 variable "registry_repo" {
     default = "job-repo"
 }

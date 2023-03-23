@@ -12,6 +12,10 @@ resource "google_cloud_run_v2_job" "job" {
       containers {
         image = "${var.region}-docker.pkg.dev/c4hnrd-dev/${var.registry_repo}/${each.value.trigger}-image:${var.environment.tag}"
         env {
+          name = "DATA_DIR"
+          value = var.data_dir
+        }
+        env {
           name = "DB_HOST"
           value = var.db_connection.host
         }
