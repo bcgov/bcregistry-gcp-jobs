@@ -43,6 +43,10 @@ variable "images" {
     },
     {
       image         = "python"
+      ocp_tag       = ":3.8.5-buster"
+    },
+    {
+      image         = "python"
       ocp_tag       = ":3.8.6-buster"
     },
     {
