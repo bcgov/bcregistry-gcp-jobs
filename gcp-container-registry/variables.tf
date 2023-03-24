@@ -42,6 +42,10 @@ variable "images" {
       ocp_tag       = ":1.18.0"
     },
     {
+      image         = "python"
+      ocp_tag       = ":3.8.6-buster"
+    },
+    {
       image         = "nats-streaming"
       ocp_tag       = ":0.21.2"
     },
