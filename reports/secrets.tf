@@ -23,5 +23,5 @@ data "google_secret_manager_secret" "client_secret" {
 }
 
 data "google_secret_manager_secret_version" "client_secret_version" {
-  secret = google_secret_manager_secret.client_secret.id
+  secret = data.google_secret_manager_secret.client_secret.id
 }

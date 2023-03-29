@@ -18,12 +18,12 @@ data "onepassword_vault" "keycloak" {
 
 data "onepassword_item" "keycloak_env" {
   vault = data.onepassword_vault.keycloak.uuid
-  title = var.job.tag
+  title = var.environment.tag
 }
 
 data "onepassword_item" "api_env" {
   vault = data.onepassword_vault.api.uuid
-  title = var.job.tag
+  title = var.environment.tag
 }
 
 locals {
