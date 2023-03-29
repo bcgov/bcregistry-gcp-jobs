@@ -57,6 +57,27 @@ resource "google_cloud_run_v2_job" "job" {
             }
           }
         }
+        env {
+          name = "NOTIFY_CLIENT"
+          value = local.client
+        }
+        env {
+          name = "NOTIFY_CLIENT_SECRET"
+          value_source {
+            secret_key_ref {
+              secret = data.google_secret_manager_secret_version.client_secret_version.secret
+              version = "1"
+            }
+          }
+        }
+        env {
+          name = "KC_URL"
+          value = local.kc_url
+        }
+        env {
+          name = "NOTIFY_API_URL"
+          value = local.notify_url
+        }
       }
     }
   }

@@ -17,3 +17,11 @@ data "google_secret_manager_secret_version" "oc_svc_version" {
   for_each     = local.pass_values
   secret = data.google_secret_manager_secret.oc_svc[each.key].id
 }
+
+data "google_secret_manager_secret" "client_secret" {
+  secret_id = "NOTIFY_CLIENT_SECRET"
+}
+
+data "google_secret_manager_secret_version" "client_secret_version" {
+  secret = google_secret_manager_secret.client_secret.id
+}
