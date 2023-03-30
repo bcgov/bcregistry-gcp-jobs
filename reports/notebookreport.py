@@ -7,7 +7,14 @@ import papermill as pm
 import glob
 import csv
 import base64
+from flask import Flask, current_app
+from config import Config
 
+def create_app(config=Config):
+    app = Flask(__name__)
+    app.config.from_object(config)
+    app.app_context().push()
+    return app
 
 def send_email(email: dict):
     """Send the email."""
@@ -29,18 +36,10 @@ def send_email(email: dict):
         'Content-Type': 'application/json',
         'Authorization': f'Bearer {token}'
     }
-    url = notify_base_url + "/api/v2/notify/resend"
-    response = requests.request("POST", url, headers=headers)
+    url = notify_base_url + "/api/v1/notify"
+    response = requests.request("POST", url, json=email, headers=headers)
 
-    resp = requests.post(
-        os.getenv('NOTIFY_API_URL', ''),
-        json=email,
-        headers={
-            'Content-Type': 'application/json',
-            'Authorization': f'Bearer {token}'
-        }
-    )
-    if resp.status_code != 200:
+    if response.status_code != 200:
         raise Exception('Unsuccessful response when sending email.')
 
 
@@ -55,7 +54,7 @@ def processnotebooks():
             'requestBy': os.getenv('SENDER_EMAIL', 'no-reply@gov.bc.ca'),
             'content': {
                 'subject': subject,
-                'body': '',
+                'body': 'Report ready',
                 'attachments': []
             }
         }
@@ -75,7 +74,6 @@ def processnotebooks():
             
             status = True
         except Exception:  # noqa: B902
-            # send_email('Error processing notebook', note_book)
             email = {
                 'recipients': os.getenv('ERROR_EMAIL_RECIPIENTS', 'Andriy.Bolyachevets@gov.bc.ca'),
                 'requestBy': os.getenv('SENDER_EMAIL', 'no-reply@gov.bc.ca'),
@@ -85,7 +83,7 @@ def processnotebooks():
                 }
             }
         finally:
-            os.remove(os.getenv('DATA_DIR', '')+'temp.ipynb')
+            os.remove(os.getenv('DATA_DIR', '') + 'temp.ipynb')
             send_email(email)
     return status
 
