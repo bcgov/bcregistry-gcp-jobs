@@ -9,6 +9,7 @@ import csv
 import base64
 from flask import Flask, current_app
 from config import Config
+from pathlib import Path
 
 def create_app(config=Config):
     app = Flask(__name__)
@@ -38,8 +39,8 @@ def send_email(email: dict):
     }
     url = notify_base_url + "/api/v1/notify"
     response = requests.request("POST", url, json=email, headers=headers)
-
     if response.status_code != 200:
+        print(response)
         raise Exception('Unsuccessful response when sending email.')
 
 
@@ -50,8 +51,7 @@ def processnotebooks():
         note_book = os.path.basename(file)
         subject = note_book.split('.ipynb')[0]
         email = {
-            'recipients': os.getenv('REPORT_RECIPIENTS', 'Andriy.Bolyachevets@gov.bc.ca'),
-            'requestBy': os.getenv('SENDER_EMAIL', 'no-reply@gov.bc.ca'),
+            'recipients': os.getenv('REPORT_RECIPIENTS', ''),
             'content': {
                 'subject': subject,
                 'body': 'Report ready',
@@ -59,7 +59,8 @@ def processnotebooks():
             }
         }
         try:
-            pm.execute_notebook(file, os.getenv('DATA_DIR', '')+'temp.ipynb', parameters=None)
+            temp_file = os.getenv('DATA_DIR', '') + 'temp.ipynb'
+            pm.execute_notebook(file, temp_file, parameters=None)
             files = glob.glob(os.getenv('DATA_DIR', '') + '*.csv')
             filename = files[0]
             counter = 0
@@ -70,20 +71,33 @@ def processnotebooks():
                     counter += 1
                     if counter >= 9:
                         break
+            with open(filename, "rb") as f:
+                attachments = []
+                file_bytes = f.read()
+                file_encoded = base64.b64encode(file_bytes)
+                attachments.append(
+                    {
+                        'fileName': subject + '_' + datetime.strftime(datetime.now(),'%Y-%m-%d') + '.csv',
+                        'fileBytes': file_encoded,
+                        'fileUrl': '',
+                        'attachOrder': 1
+                    }
+                )
+                email['content']['attachments'] = attachments
             filename = os.path.basename(filename)
             
             status = True
         except Exception:  # noqa: B902
             email = {
-                'recipients': os.getenv('ERROR_EMAIL_RECIPIENTS', 'Andriy.Bolyachevets@gov.bc.ca'),
-                'requestBy': os.getenv('SENDER_EMAIL', 'no-reply@gov.bc.ca'),
+                'recipients': os.getenv('ERROR_EMAIL_RECIPIENTS', ''),
                 'content': {
                     'subject': subject,
                     'body': 'Failed to generate report',
                 }
             }
         finally:
-            os.remove(os.getenv('DATA_DIR', '') + 'temp.ipynb')
+            if Path(temp_file).exists():
+                os.remove(os.getenv('DATA_DIR', '') + 'temp.ipynb')
             send_email(email)
     return status
 
