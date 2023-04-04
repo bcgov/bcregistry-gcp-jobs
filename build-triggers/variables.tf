@@ -12,19 +12,21 @@ variable "environment" {
 
 variable "jobs" {
   type = list(object({
-    name                   = string
     trigger                = string
   }))
   description = "Builds for jobs"
 
   default = [
-    { name       = "notify-api-day-job"
+    {
       trigger    = "notify-api-day-job"
     },
-    { name       = "reindex-auth-db-job"
+    {
       trigger    = "reindex-db-job"
     },
-    { name       = "reports"
+    {
+      trigger    = "notebooks"
+    },
+    {
       trigger    = "reports"
     }
   ]

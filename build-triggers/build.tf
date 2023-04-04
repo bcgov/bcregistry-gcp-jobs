@@ -7,7 +7,7 @@ resource "google_cloudbuild_trigger" "trigger" {
 
   for_each   = {
     for index, job in var.jobs:
-    job.name => job
+    job.trigger => job
   }
 
   name        = each.value.trigger
@@ -22,7 +22,6 @@ resource "google_cloudbuild_trigger" "trigger" {
     _LOCATION = var.region
     _REGISTRY_REPO = var.registry_repo
     _TAG = "dev"
-    _IMAGE = "${each.value.trigger}-image"
   }
 
   filename = "cloudbuild.yaml"
