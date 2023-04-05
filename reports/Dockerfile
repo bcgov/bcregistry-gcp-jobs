@@ -11,7 +11,7 @@ ENV OC_RELEASE "openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit"
 
 LABEL org.label-schema.vcs-ref=${VCS_REF} \
     org.label-schema.build-date=${BUILD_DATE}
-    
+
 USER root
 
 # Create working directory
@@ -32,8 +32,6 @@ RUN pip install pip==20.3.3
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
-
-
 
 # Set Python path
 ENV PYTHONPATH=/opt/app-root
