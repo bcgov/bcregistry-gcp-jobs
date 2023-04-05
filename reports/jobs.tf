@@ -89,7 +89,7 @@ resource "google_cloud_scheduler_job" "scheduler" {
     job.name => job
   }
   name             = each.value.name
-  schedule         = "0 1 * * 0"
+  schedule         = each.value.cron
   time_zone        = "America/Vancouver"
   attempt_deadline = "320s"
   region           = var.region

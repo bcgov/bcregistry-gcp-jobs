@@ -18,6 +18,7 @@ variable "jobs" {
     name                   = string
     trigger                = string
     vault_section          = string
+    cron                   = string
   }))
 
   description = "OpenShift database reindexing jobs"
@@ -27,11 +28,13 @@ variable "jobs" {
       name          = "worksafe-job"
       trigger       = "worksafe-notebook"
       vault_section = "entity-db2"
+      cron          = "0 1 * * 0"
     },
     {
       name          = "worksafe2-job"
       trigger       = "worksafe2-notebook"
       vault_section = "entity-db2"
+      cron          = "0 2 * * 3"
     }
   ]
 }
