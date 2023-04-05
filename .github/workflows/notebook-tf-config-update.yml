@@ -1,0 +1,47 @@
+name: Notebook Update Trigger
+
+on:
+  workflow_dispatch:
+#   push:
+#     branches:
+#     - main
+#     paths:
+#     - notebooks
+    
+permissions:
+  contents: read
+
+jobs:
+  update-tf-config:
+    name: 'Update Terraform configs for notebooks'
+    runs-on: ubuntu-latest
+    environment: production
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: checkout
+      uses: actions/checkout@v3
+      with:
+        ref: main
+    - name: copy notebooks
+      run: |
+        cp -R notebooks/. /home/runner/work/notebooks
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        ref: tools            
+    - name: check files
+      run: |
+        pwd
+        echo "..."
+        ls
+        echo "..."
+        cp -R /home/runner/work/notebooks/. ./notebooks
+        echo "---"
+        ls
+        echo "---"
+        ls ./notebooks
