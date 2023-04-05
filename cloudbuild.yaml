@@ -40,7 +40,7 @@ steps:
               echo "~~~"
               echo $image_name
               echo "~~~"
-              gcloud builds submit $line --config=${config} --substitutions _SHORT_SHA=$SHORT_SHA,_LOCATION=$_LOCATION,_IMAGE=$image_name,_REGISTRY_REPO=$_REGISTRY_REPO,_TAG=dev
+              gcloud builds submit $subdir --config=${config} --substitutions _SHORT_SHA=$SHORT_SHA,_LOCATION=$_LOCATION,_IMAGE=$image_name,_REGISTRY_REPO=$_REGISTRY_REPO,_TAG=dev
           done < subdirs.txt
           continue
         else
