@@ -24,8 +24,13 @@ variable "jobs" {
 
   default = [
     {
-      name          = "reports-job"
-      trigger       = "reports"
+      name          = "worksafe-job"
+      trigger       = "worksafe-notebook"
+      vault_section = "entity-db2"
+    },
+    {
+      name          = "worksafe2-job"
+      trigger       = "worksafe2-notebook"
       vault_section = "entity-db2"
     }
   ]
