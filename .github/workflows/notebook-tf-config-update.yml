@@ -2,14 +2,11 @@ name: Notebook Update Trigger
 
 on:
   workflow_dispatch:
-#   push:
-#     branches:
-#     - main
-#     paths:
-#     - notebooks
-    
-permissions:
-  contents: read
+  push:
+    branches:
+    - main
+    paths:
+    - 'notebooks/**'
 
 jobs:
   update-tf-config:
@@ -22,26 +19,72 @@ jobs:
         shell: bash
 
     steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: checkout
+    - name: checkout main
       uses: actions/checkout@v3
       with:
         ref: main
     - name: copy notebooks
       run: |
         cp -R notebooks/. /home/runner/work/notebooks
-    - name: Checkout
+    - name: checkout tools
       uses: actions/checkout@v3
       with:
-        ref: tools            
-    - name: check files
+        ref: tools
+    - name: start new variables.tf
+      working-directory: ./reports
       run: |
-        pwd
-        echo "..."
-        ls
-        echo "..."
-        cp -R /home/runner/work/notebooks/. ./notebooks
-        echo "---"
-        ls
-        echo "---"
-        ls ./notebooks
+        touch new_variables.tf
+        sed -e '/default = \[/,$d' variables.tf >> new_variables.tf
+    - name: iterate over notebooks and construct new variables.tf
+      working-directory: ./reports
+      run: |
+        echo "default = [" >> new_variables.tf
+        find /home/runner/work/notebooks -maxdepth 1 -mindepth 1 -type d > subdirs.txt
+        while read subdir
+        do
+            echo "{" >> new_variables.tf
+            notebook=${subdir#"/home/runner/work/notebooks/"}
+            echo -n "name = " >> new_variables.tf
+            echo "${notebook}-job" >> new_variables.tf
+            echo -n "trigger = " >> new_variables.tf
+            echo "${notebook}-notebook" >> new_variables.tf
+            config="${subdir}/.env"
+            while read env_var
+            do
+              IFS="=" read -r var_name var_value <<< "${env_var}"
+              case $var_name in
+              CRON_SCHEDULE)
+                echo -n "cron = " >> new_variables.tf
+                echo "${var_value}" >> new_variables.tf
+                ;;
+              VAULT)
+                echo -n "vault_section = " >> new_variables.tf
+                echo "\"${var_value}-db2\"" >> new_variables.tf
+                ;;
+              *)
+                echo "skipping"
+                ;;
+            esac
+            done < $config
+            echo "}," >> new_variables.tf
+        done < subdirs.txt
+        echo "]}" >> new_variables.tf
+    - name: replace variables.tf with new_variables.tf
+      working-directory: ./reports
+      run: |
+        cp -f new_variables.tf variables.tf
+        cat variables.tf
+        rm new_variables.tf
+        rm subdirs.txt
+    - name: setup git config
+      run: |
+        git config user.name "GitHub Actions Notebook Updater Bot"
+        git config user.email "<>"
+    - name: commit changes
+      working-directory: ./reports
+      run: |
+        git branch
+        git diff
+        git add .
+        git commit -m "update gcp configs for notebook report jobs"
+        git push
