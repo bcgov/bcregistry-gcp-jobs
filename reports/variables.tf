@@ -13,32 +13,6 @@ variable "environment" {
   }
 }
 
-variable "jobs" {
-  type = list(object({
-    name                   = string
-    trigger                = string
-    vault_section          = string
-    cron                   = string
-  }))
-
-  description = "OpenShift database reindexing jobs"
-
-  default = [
-    {
-      name          = "worksafe-job"
-      trigger       = "worksafe-notebook"
-      vault_section = "entity-db2"
-      cron          = "0 1 * * 0"
-    },
-    {
-      name          = "worksafe2-job"
-      trigger       = "worksafe2-notebook"
-      vault_section = "entity-db2"
-      cron          = "0 2 * * 3"
-    }
-  ]
-}
-
 variable "region" {
     default = "northamerica-northeast1"
 }
@@ -65,4 +39,30 @@ variable "db_connection" {
     db_user="postgres"
     oc_server="https://api.silver.devops.gov.bc.ca:6443"
   }
+}
+
+variable "jobs" {
+  type = list(object({
+    name                   = string
+    trigger                = string
+    vault_section          = string
+    cron                   = string
+  }))
+
+  description = "OpenShift database reindexing jobs"
+
+  default = [
+    {
+      name          = "worksafe-job"
+      trigger       = "worksafe-notebook"
+      vault_section = "entity-db2"
+      cron          = "0 1 * * 0"
+    },
+    {
+      name          = "worksafe2-job"
+      trigger       = "worksafe2-notebook"
+      vault_section = "entity-db2"
+      cron          = "0 2 * * 3"
+    }
+  ]
 }
