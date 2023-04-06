@@ -52,17 +52,18 @@ variable "jobs" {
   description = "OpenShift database reindexing jobs"
 
   default = [
-    {
-      name          = "worksafe-job"
-      trigger       = "worksafe-notebook"
-      vault_section = "entity-db2"
-      cron          = "0 1 * * 0"
-    },
-    {
-      name          = "worksafe2-job"
-      trigger       = "worksafe2-notebook"
-      vault_section = "entity-db2"
-      cron          = "0 2 * * 3"
-    }
+   {
+     name = "worksafe2-job"
+     trigger = "worksafe2-notebook"
+     cron = "0 2 * * 3"
+     vault_section = "entity-db2"
+   },
+   {
+     name = "worksafe-job"
+     trigger = "worksafe-notebook"
+     cron = "0 1 * * 0"
+     vault_section = "entity-db2"
+   },
   ]
 }
+
