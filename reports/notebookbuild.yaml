@@ -1,4 +1,4 @@
 steps:
 - name: "gcr.io/cloud-builders/docker"
-  args: ["build","-t", "${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REGISTRY_REPO}/${_IMAGE}:${_SHORT_SHA}", "-t", "${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REGISTRY_REPO}/${_IMAGE}:dev", "-t", "${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REGISTRY_REPO}/${_IMAGE}:test", "-t", "${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REGISTRY_REPO}/${_IMAGE}:prod", "."]
-images: ["${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REGISTRY_REPO}/${_IMAGE}:dev", "${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REGISTRY_REPO}/${_IMAGE}:test", "${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REGISTRY_REPO}/${_IMAGE}:prod"]
+  args: ["build","-t", "${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REGISTRY_REPO}/${_IMAGE}:${_SHORT_SHA}", "-t", "${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REGISTRY_REPO}/${_IMAGE}:${_TAG}", "-t", "${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REGISTRY_REPO}/${_IMAGE}:test", "-t", "${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REGISTRY_REPO}/${_IMAGE}:prod", "."]
+images: ["${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REGISTRY_REPO}/${_IMAGE}:${_TAG}", "${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REGISTRY_REPO}/${_IMAGE}:test", "${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REGISTRY_REPO}/${_IMAGE}:prod"]
