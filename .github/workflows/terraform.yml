@@ -20,53 +20,15 @@ on:
         - dev
         - test
         - prod
-  push:
-    branches:
-      - tools
-    paths:
-      - 'reports/**'
 
 permissions:
   contents: read
 
 jobs:
-  terraform:
-    name: 'Terraform'
-    runs-on: ubuntu-latest
-    environment: production
-
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
-    defaults:
-      run:
-        shell: bash
-
-    steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        ref: tools
-    - name: Apply env
-      working-directory: ${{ github.event.inputs.gcp_job }}
-      run: sed -i 's/dev"/${{ github.event.inputs.gcp_env }}"/g' variables.tf; sed -i 's/dev"/${{ github.event.inputs.gcp_env }}"/g' main.tf
-
-    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - name: Terraform Init
-      run: terraform init -input=false
-      working-directory: ${{ github.event.inputs.gcp_job }}
-
-    # Generates an execution plan for Terraform
-    - name: Terraform Plan
-      run: terraform plan -input=false
-      working-directory: ${{ github.event.inputs.gcp_job }}
-
-      # Build or change infrastructure according to Terraform configuration files
-    - name: Terraform Apply
-      run: terraform apply -auto-approve -input=false
-      working-directory: ${{ github.event.inputs.gcp_job }}
+  run-terraform-apply:
+    uses: bcgov/bcregistry-gcp-jobs/.github/workflows/terraform-common.yml@main
+    with:
+      gcp_job: ${{ github.event.inputs.gcp_job }}
+      gcp_env: ${{ github.event.inputs.gcp_env }}
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}

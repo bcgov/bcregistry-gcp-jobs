@@ -36,27 +36,27 @@ jobs:
     - name: iterate over notebooks and construct new variables.tf
       working-directory: ./reports
       run: |
-        echo "default = [" >> new_variables.tf
+        echo "  default = [" >> new_variables.tf
         find /home/runner/work/notebooks -maxdepth 1 -mindepth 1 -type d > subdirs.txt
         while read subdir
         do
-            echo "{" >> new_variables.tf
+            echo "   {" >> new_variables.tf
             notebook=${subdir#"/home/runner/work/notebooks/"}
-            echo -n "name = " >> new_variables.tf
-            echo "${notebook}-job" >> new_variables.tf
-            echo -n "trigger = " >> new_variables.tf
-            echo "${notebook}-notebook" >> new_variables.tf
+            echo -n "     name = " >> new_variables.tf
+            echo "\"${notebook}-job\"" >> new_variables.tf
+            echo -n "     trigger = " >> new_variables.tf
+            echo "\"${notebook}-notebook\"" >> new_variables.tf
             config="${subdir}/.env"
             while read env_var
             do
               IFS="=" read -r var_name var_value <<< "${env_var}"
               case $var_name in
               CRON_SCHEDULE)
-                echo -n "cron = " >> new_variables.tf
+                echo -n "     cron = " >> new_variables.tf
                 echo "${var_value}" >> new_variables.tf
                 ;;
               VAULT)
-                echo -n "vault_section = " >> new_variables.tf
+                echo -n "     vault_section = " >> new_variables.tf
                 echo "\"${var_value}-db2\"" >> new_variables.tf
                 ;;
               *)
@@ -64,9 +64,11 @@ jobs:
                 ;;
             esac
             done < $config
-            echo "}," >> new_variables.tf
+            echo "   }," >> new_variables.tf
         done < subdirs.txt
-        echo "]}" >> new_variables.tf
+        echo "  ]" >> new_variables.tf
+        echo "}" >> new_variables.tf
+        echo >> new_variables.tf
     - name: replace variables.tf with new_variables.tf
       working-directory: ./reports
       run: |
@@ -86,9 +88,11 @@ jobs:
         git add .
         git commit -m "update gcp configs for notebook report jobs"
         git push
-    run-terraform-apply:
-      needs: update-tf-config
-      uses: bcgov/bcregistry-gcp-jobs/.github/workflows/terraform-common.yml@main
-      with:
-        gcp_job: reports
-        gcp_env: prod
+  run-terraform-apply:
+    needs: update-tf-config
+    uses: bcgov/bcregistry-gcp-jobs/.github/workflows/terraform-common.yml@main
+    with:
+      gcp_job: reports
+      gcp_env: prod
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
