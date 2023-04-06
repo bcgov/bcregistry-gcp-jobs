@@ -13,11 +13,9 @@ jobs:
     name: 'Update Terraform configs for notebooks'
     runs-on: ubuntu-latest
     environment: production
-
     defaults:
       run:
         shell: bash
-
     steps:
     - name: checkout main
       uses: actions/checkout@v3
@@ -88,3 +86,9 @@ jobs:
         git add .
         git commit -m "update gcp configs for notebook report jobs"
         git push
+    run-terraform-apply:
+      needs: update-tf-config
+      uses: bcgov/bcregistry-gcp-jobs/.github/workflows/terraform-common.yml@main
+      with:
+        gcp_job: reports
+        gcp_env: prod

@@ -1,30 +1,14 @@
-name: 'Terraform'
+name: 'Terraform-Common'
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       gcp_job:
         required: true
-        type: choice
-        description: 'Directory of the job to (re-)deploy'
-        options:
-        - notify-api-day-job
-        - reindex-db-job
-        - build-triggers
-        - reports
+        type: string
       gcp_env:
-        description: 'Namespace suffix: one of dev/test/prod'
+        type: string
         required: true
-        type: choice
-        options:
-        - dev
-        - test
-        - prod
-  push:
-    branches:
-      - tools
-    paths:
-      - 'reports/**'
 
 permissions:
   contents: read
@@ -46,6 +30,12 @@ jobs:
       uses: actions/checkout@v3
       with:
         ref: tools
+    - name: Check event type
+      run:
+         if [ ${{ github.event.event_name }} == 'push' ]; then
+            github.event.inputs.gcp_job = reports
+            github.event.inputs.gcp_env = prod
+         fi
     - name: Apply env
       working-directory: ${{ github.event.inputs.gcp_job }}
       run: sed -i 's/dev"/${{ github.event.inputs.gcp_env }}"/g' variables.tf; sed -i 's/dev"/${{ github.event.inputs.gcp_env }}"/g' main.tf
