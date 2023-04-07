@@ -2,6 +2,30 @@
 
 Common infrastructure for notebook reports
 
+## Deploying Jupyter Notebook Reports
+
+Detailed deployment of notebook reports can be traced in a [notebook-tf-config-update.yml](https://github.com/bcgov/bcregistry-gcp-jobs/blob/main/.github/workflows/notebook-tf-config-update.yml) gh actions workflow.
+
+The workflow is triggered when pushes are made to notebooks/ directory in the current repo, where notebooks should be added as subdirectories (e.g. in notebooks/worksafe, 'worksafe' will be used to name infrastructure artifacts, such as docker images, gcp jobs, etc.). The workflow will take care of building docker images encapsulating notebook jobs and scheduling them on google cloud.
+
+Currently, the workflow expects 2 files for each notebook subdirectory: .env and *.ipynb (it does not matter what a *.ipynb file is called, as long as it has the correct extension, but the file name will be used in the subject of the email sent out on job completion):
+
+>notebooks/
+>>|-- worksafe/
+>>>       |-- .env
+>>>       |-- worksafe_report.ipynb
+
+.env contains a list of environmental variables. The following variables are needed:
+
+REPORT_RECIPIENTS=... - comma separated list of report recipient emails
+
+ERROR_EMAIL_RECIPIENTS=... - comma separated list of error recipient emails
+
+CRON_SCHEDULE="..." - cron schedule expression in double quotes that determines frequency of report runs, see https://crontab.guru for details
+
+VAULT=... - 1password section of 'database' vault, 4 values are accepted: auth, pay, namex, entity (for lear db)
+
+
 ## Development Environment
 
-Create .env file with values pulled from 1password (the list of used variables can be found in the tools branch under variables.tf or in gcp job configurations). Notebook of interest can be dropped into the directory.
+Create .env file with values pulled from 1password (the latest list of used variables can be found in the tools branch under reports/variables.tf or in gcp job configurations). Notebook .ipynb file and corresponding .env should be dropped into the current reports/ directory.
