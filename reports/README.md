@@ -15,6 +15,13 @@ Currently, the workflow expects 2 files for each notebook subdirectory: .env and
 >>>       |-- .env
 >>>       |-- worksafe_report.ipynb
 
+Connection to OpenShift database in *.ipynb is established via (note the names of environmental variables used - DB_USER, DB_PASS, DB_HOST, DB_PORT - these will be supplied by the google cloud environment):
+```
+connect_to_db = 'postgresql://' + \
+                os.getenv('DB_USER', '') + ":" + os.getenv('DB_PASS', '') +'@' + \
+                os.getenv('DB_HOST', '') + ':' + os.getenv('DB_PORT', '5432') + '/' + os.getenv('DB_NAME', '');
+```
+
 .env contains a list of environmental variables. The following variables are needed:
 
 REPORT_RECIPIENTS=... - comma separated list of report recipient emails
