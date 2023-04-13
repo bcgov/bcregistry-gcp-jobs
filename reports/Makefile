@@ -49,15 +49,6 @@ install: clean ## Install python virtrual environment
 	pip install -Ur requirements.txt
 
 #################################################################################
-# COMMANDS - Local                                                              #
-#################################################################################
-run: db ## Run the project in local
-	. venv/bin/activate && python -m flask run -p 5000
-
-db: ## Update the local database
-	. venv/bin/activate && python -m manage.py db upgrade
-
-#################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################
 .PHONY: help

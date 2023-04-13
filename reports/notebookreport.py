@@ -7,15 +7,12 @@ import papermill as pm
 import glob
 import csv
 import base64
-from flask import Flask, current_app
-from config import Config
 from pathlib import Path
+import os
+from dotenv import load_dotenv, find_dotenv
 
-def create_app(config=Config):
-    app = Flask(__name__)
-    app.config.from_object(config)
-    app.app_context().push()
-    return app
+# this will load all the envars from a .env file located in the project root (api)
+load_dotenv(find_dotenv())
 
 def send_email(email: dict):
     """Send the email."""
