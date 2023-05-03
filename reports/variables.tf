@@ -59,6 +59,11 @@ variable "jobs" {
      vault_section = "entity-db2"
    },
    {
+     name = "Dye_durham-job"
+     trigger = "Dye_durham-notebook"
+     cron = "0 6 1 * *"
+   },
+   {
      name = "worksafe-job"
      trigger = "worksafe-notebook"
      cron = "0 1 * * 0"
