@@ -53,12 +53,6 @@ variable "jobs" {
 
   default = [
    {
-     name = "worksafe2-job"
-     trigger = "worksafe2-notebook"
-     cron = "0 2 * * 3"
-     vault_section = "entity-db2"
-   },
-   {
      name = "dyedurham-job"
      trigger = "dyedurham-notebook"
      cron = "30 12 * * *"
