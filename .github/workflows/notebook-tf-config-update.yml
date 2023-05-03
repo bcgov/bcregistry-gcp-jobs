@@ -47,7 +47,7 @@ jobs:
             echo -n "     trigger = " >> new_variables.tf
             echo "\"${notebook}-notebook\"" >> new_variables.tf
             config="${subdir}/.env"
-            while read env_var
+            while read -r env_var || [ -n "$env_var" ]
             do
               IFS="=" read -r var_name var_value <<< "${env_var}"
               case $var_name in

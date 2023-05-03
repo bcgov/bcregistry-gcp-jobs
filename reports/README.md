@@ -6,7 +6,7 @@ Common infrastructure for notebook reports
 
 Detailed deployment of notebook reports can be traced in a [notebook-tf-config-update.yml](https://github.com/bcgov/bcregistry-gcp-jobs/blob/main/.github/workflows/notebook-tf-config-update.yml) gh actions workflow.
 
-The workflow is triggered when pushes are made to notebooks/ directory in the current repo, where notebooks should be added as subdirectories (e.g. in notebooks/worksafe, 'worksafe' will be used to name infrastructure artifacts, such as docker images, gcp jobs, etc.). The workflow will take care of building docker images encapsulating notebook jobs and scheduling them on google cloud.
+The workflow is triggered when pushes are made to notebooks/ directory in the current repo, where notebooks should be added as subdirectories (e.g. in notebooks/worksafe, 'worksafe' will be used to name infrastructure artifacts, such as docker images, gcp jobs, etc.). The workflow will take care of building docker images encapsulating notebook jobs and scheduling them on google cloud. Subdirectory name is used to generate a name for google cloud job. Since google cloud restricts job names: ```only lowercase, digits, and hyphens; must begin with letter, and cannot end with hyphen```, the naming of subdirectories must follow this convention as well.
 
 Currently, the workflow expects 2 files for each notebook subdirectory: .env and *.ipynb (it does not matter what a *.ipynb file is called, as long as it has the correct extension, but the file name will be used in the subject of the email sent out on job completion):
 
