@@ -61,7 +61,7 @@ variable "jobs" {
    {
      name = "Dye_durham-job"
      trigger = "Dye_durham-notebook"
-     cron = "15 11 * * *"
+     cron = "15 12 * * *"
      vault_section = "entity-db2"
    },
    {
