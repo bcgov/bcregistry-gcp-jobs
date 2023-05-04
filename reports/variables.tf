@@ -61,7 +61,7 @@ variable "jobs" {
    {
      name = "worksafe-job"
      trigger = "worksafe-notebook"
-     cron = "0 1 * * 0"
+     cron = "0 10 * * *"
      vault_section = "entity-db2"
    },
   ]
