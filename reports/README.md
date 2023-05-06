@@ -26,6 +26,8 @@ connect_to_db = 'postgresql://' + \
 
 REPORT_RECIPIENTS=... - comma separated list of report recipient emails
 
+REPORT_SUBJECT=... - email subject
+
 ERROR_EMAIL_RECIPIENTS=... - comma separated list of error recipient emails
 
 CRON_SCHEDULE="..." - cron schedule expression in double quotes that determines frequency of report runs, see https://crontab.guru for details

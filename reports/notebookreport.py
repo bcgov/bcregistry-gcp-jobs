@@ -43,10 +43,10 @@ def send_email(email: dict):
 
 def processnotebooks():
     status = False
-    
+
     for file in  glob.glob('*.ipynb', recursive=True):
         note_book = os.path.basename(file)
-        subject = note_book.split('.ipynb')[0]
+        subject = os.getenv('REPORT_SUBJECT', note_book.split('.ipynb')[0])
         email = {
             'recipients': os.getenv('REPORT_RECIPIENTS', ''),
             'content': {
@@ -82,7 +82,7 @@ def processnotebooks():
                 )
                 email['content']['attachments'] = attachments
             filename = os.path.basename(filename)
-            
+
             status = True
         except Exception:  # noqa: B902
             email = {
