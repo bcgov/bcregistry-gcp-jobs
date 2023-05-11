@@ -10,6 +10,7 @@ import base64
 from pathlib import Path
 import os
 from dotenv import load_dotenv, find_dotenv
+import datetime
 
 # this will load all the envars from a .env file located in the project root (api)
 load_dotenv(find_dotenv())
@@ -46,7 +47,8 @@ def processnotebooks():
 
     for file in  glob.glob('*.ipynb', recursive=True):
         note_book = os.path.basename(file)
-        subject = os.getenv('REPORT_SUBJECT', note_book.split('.ipynb')[0])
+        today = datetime.date.today()
+        subject = os.getenv('REPORT_SUBJECT', note_book.split('.ipynb')[0]) + today.strftime(' - %Y-%b-%d')
         email = {
             'recipients': os.getenv('REPORT_RECIPIENTS', ''),
             'content': {
