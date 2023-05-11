@@ -2,7 +2,7 @@
 import requests
 import os
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import papermill as pm
 import glob
 import csv
@@ -10,7 +10,6 @@ import base64
 from pathlib import Path
 import os
 from dotenv import load_dotenv, find_dotenv
-import datetime
 
 # this will load all the envars from a .env file located in the project root (api)
 load_dotenv(find_dotenv())
@@ -47,7 +46,7 @@ def processnotebooks():
 
     for file in  glob.glob('*.ipynb', recursive=True):
         note_book = os.path.basename(file)
-        today = datetime.date.today()
+        today = date.today()
         subject = os.getenv('REPORT_SUBJECT', note_book.split('.ipynb')[0]) + today.strftime(' - %Y-%b-%d')
         email = {
             'recipients': os.getenv('REPORT_RECIPIENTS', ''),
