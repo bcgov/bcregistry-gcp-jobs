@@ -25,3 +25,11 @@ data "google_secret_manager_secret" "client_secret" {
 data "google_secret_manager_secret_version" "client_secret_version" {
   secret = data.google_secret_manager_secret.client_secret.id
 }
+
+data "google_secret_manager_secret" "gc_secret" {
+  secret_id = "GC_NOTIFY_KEY"
+}
+
+data "google_secret_manager_secret_version" "gc_secret_version" {
+  secret = data.google_secret_manager_secret.gc_secret.id
+}

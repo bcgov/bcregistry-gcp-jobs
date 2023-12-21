@@ -71,6 +71,15 @@ resource "google_cloud_run_v2_job" "job" {
           }
         }
         env {
+          name = "GC_NOTIFY_KEY"
+          value_source {
+            secret_key_ref {
+              secret = data.google_secret_manager_secret_version.gc_secret_version.secret
+              version = "1"
+            }
+          }
+        }
+        env {
           name = "KC_URL"
           value = local.kc_url
         }
