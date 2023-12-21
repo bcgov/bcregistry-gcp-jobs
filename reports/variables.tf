@@ -55,7 +55,7 @@ variable "jobs" {
    {
      name = "gc-notify-failures-job"
      trigger = "gc-notify-failures-notebook"
-     cron = "0 10 * * *"
+     cron = "0 1 * * *"
      vault_section = "notify-db2"
    },
    {
