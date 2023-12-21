@@ -53,6 +53,12 @@ variable "jobs" {
 
   default = [
    {
+     name = "gc-notify-failures-job"
+     trigger = "gc-notify-failures-notebook"
+     cron = "0 10 * * *"
+     vault_section = "notify-db2"
+   },
+   {
      name = "dyedurham-job"
      trigger = "dyedurham-notebook"
      cron = "0 8 1 * *"
