@@ -39,6 +39,10 @@ def reindex_db():
             if "PostgreSQL 10" in version_str:
                 cursor.execute("REINDEX DATABASE \"{0}\";".format(db_name))
             else:
+                cursor.execute("select pid from pg_stat_progress_create_index;")
+                index_locks = cursor.fetchall()
+                for l in index_locks:
+                    cursor.execute("SELECT pg_cancel_backend({0});".format(l[0]))
                 cursor.execute("REINDEX (VERBOSE) DATABASE CONCURRENTLY \"{0}\";".format(db_name))
                 for notice in connection.notices:
                     print(notice)
