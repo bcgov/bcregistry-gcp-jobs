@@ -32,7 +32,7 @@ ERROR_EMAIL_RECIPIENTS=... - comma separated list of error recipient emails
 
 CRON_SCHEDULE="..." - cron schedule expression in double quotes that determines frequency of report runs, see https://crontab.guru for details
 
-VAULT=... - 1password section of 'database' vault, 4 values are accepted: auth, pay, namex, entity (for lear db)
+VAULT=... - 1password section of 'database' vault, 5 values are accepted: auth, pay, namex, entity (for lear db), notify (for notify-api db)
 
 
 ## Development Environment
