@@ -70,5 +70,11 @@ variable "jobs" {
      cron = "0 10 * * *"
      vault_section = "entity-db2"
    },
+   {
+     name = "phishing-scan-job"
+     trigger = "phishing-scan-notebook"
+     cron = "0 1 * * *"
+   },
   ]
 }
+
