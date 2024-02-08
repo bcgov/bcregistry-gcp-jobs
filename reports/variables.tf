@@ -45,7 +45,7 @@ variable "jobs" {
   type = list(object({
     name                   = string
     trigger                = string
-    vault_section          = string
+    vault_section          = optional(string, "notify-db2")
     cron                   = string
   }))
 
@@ -72,4 +72,3 @@ variable "jobs" {
    },
   ]
 }
-
