@@ -18,6 +18,10 @@ steps:
         echo $line
         image_name="${line}-image"
         if [[ $line == *"notebooks"* ]]; then
+          if [[ -f "${line}/requirements.txt" ]]; then
+            echo "Merging requirements files"
+            cat "${line}/requirements.txt" >> reports/requirements.txt
+          fi
           cp -R reports/. $line
           config="${line}/notebookbuild.yaml"
           image_name=${line#"notebooks/"}
@@ -32,6 +36,10 @@ steps:
           echo "..."
           while read subdir
           do
+              if [[ -f "${subdir}/requirements.txt" ]]; then
+                echo "Merging requirements files"
+                cat "${subdir}/requirements.txt" >> reports/requirements.txt
+              fi
               cp -R reports/. $subdir
               config="${subdir}/notebookbuild.yaml"
               echo $config

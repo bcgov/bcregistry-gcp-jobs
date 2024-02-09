@@ -39,13 +39,13 @@ clean-pyc: ## Clean cache files
 build-req: clean ## Upgrade requirements
 	test -f venv/bin/activate || python3.8 -m venv  $(CURRENT_ABS_DIR)/venv ;\
 	. venv/bin/activate ;\
-	pip install pip==20.1.1 ;\
+	pip install pip==24.0 ;\
 	pip freeze | sort > requirements.txt
 
 install: clean ## Install python virtrual environment
 	test -f venv/bin/activate || python3.8 -m venv  $(CURRENT_ABS_DIR)/venv ;\
 	. venv/bin/activate ;\
-	pip install pip==20.1.1 ;\
+	pip install pip==24.0 ;\
 	pip install -Ur requirements.txt
 
 #################################################################################

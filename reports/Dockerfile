@@ -28,7 +28,7 @@ RUN tar --strip-components=1 -xzvf  /opt/oc/release.tar.gz -C /opt/oc/ && \
 # Install the requirements
 COPY ./requirements.txt .
 
-RUN pip install pip==20.3.3
+RUN pip install pip==24.0
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .

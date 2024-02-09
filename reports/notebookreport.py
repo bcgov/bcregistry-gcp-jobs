@@ -1,8 +1,7 @@
 """s2i based launch script to run the notebook."""
 import requests
-import os
 import sys
-from datetime import datetime, timedelta, date
+from datetime import datetime, date
 import papermill as pm
 import glob
 import csv
@@ -85,7 +84,7 @@ def processnotebooks():
             filename = os.path.basename(filename)
 
             status = True
-        except Exception:  # noqa: B902
+        except Exception as e:  # noqa: B902
             email = {
                 'recipients': os.getenv('ERROR_EMAIL_RECIPIENTS', ''),
                 'content': {
@@ -93,6 +92,7 @@ def processnotebooks():
                     'body': 'Failed to generate report',
                 }
             }
+            print(e)
         finally:
             if Path(temp_file).exists():
                 os.remove(os.getenv('DATA_DIR', '') + 'temp.ipynb')
