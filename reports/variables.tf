@@ -59,12 +59,6 @@ variable "jobs" {
      vault_section = "notify-db2"
    },
    {
-     name = "dyedurham-job"
-     trigger = "dyedurham-notebook"
-     cron = "0 8 1 * *"
-     vault_section = "entity-db2"
-   },
-   {
      name = "worksafe-job"
      trigger = "worksafe-notebook"
      cron = "0 10 * * *"
@@ -74,6 +68,12 @@ variable "jobs" {
      name = "phishing-scan-job"
      trigger = "phishing-scan-notebook"
      cron = "0 5 * * *"
+   },
+   {
+     name = "dyedurham-job"
+     trigger = "dyedurham-notebook"
+     cron = "0 8 1 * *"
+     vault_section = "entity-db2"
    },
   ]
 }
