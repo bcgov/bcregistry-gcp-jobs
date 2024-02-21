@@ -1,7 +1,7 @@
 resource "google_secret_manager_secret" "client_secret" {
   secret_id = "NOTIFY_CLIENT_SECRET"
   replication {
-    automatic = true
+     auto {}
   }
 }
 
