@@ -35,7 +35,7 @@ def notify_api_run():
         'Content-Type': 'application/json',
         'Authorization': f'Bearer {token}'
     }
-    url = notify_base_url + "/api/v2/notify/resend"
+    url = notify_base_url + "/api/v2/resend"
     response = requests.request("POST", url, headers=headers)
     print(response.status_code)
     print(response)
