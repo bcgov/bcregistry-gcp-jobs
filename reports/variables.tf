@@ -60,7 +60,7 @@ variable "jobs" {
    {
      name = "ar-prompt-filing-job"
      trigger = "ar-prompt-filing-notebook"
-     cron = "0 15 * * *"
+     cron = "30 10 * * *"
      vault_section = "entity-db2"
    },
    {
