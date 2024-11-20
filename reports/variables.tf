@@ -53,15 +53,15 @@ variable "jobs" {
 
   default = [
    {
-     name = "AR_prompt_filing-job"
-     trigger = "AR_prompt_filing-notebook"
-     cron = "0 15 * * *"
-     vault_section = "entity-db2"
-   },
-   {
      name = "phishing-scan-job"
      trigger = "phishing-scan-notebook"
      cron = "0 5 * * *"
+   },
+   {
+     name = "ar-prompt-filing-job"
+     trigger = "ar-prompt-filing-notebook"
+     cron = "0 15 * * *"
+     vault_section = "entity-db2"
    },
    {
      name = "gc-notify-failures-job"
