@@ -6,6 +6,7 @@ resource "google_cloud_run_v2_job" "job" {
   name = each.value.name
   location = var.region
   launch_stage = "BETA"
+  deletion_protection = false
 
   template {
     template {
