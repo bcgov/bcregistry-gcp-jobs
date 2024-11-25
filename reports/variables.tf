@@ -55,7 +55,7 @@ variable "jobs" {
    {
      name = "phishing-scan-job"
      trigger = "phishing-scan-notebook"
-     cron = "0 5 * * *"
+     cron = "0 4 * * *"
    },
    {
      name = "ar-prompt-filing-job"
