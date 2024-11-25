@@ -64,6 +64,12 @@ variable "jobs" {
      vault_section = "entity-db2"
    },
    {
+     name = "bn-processing-batch-job"
+     trigger = "bn-processing-batch-notebook"
+     cron = "00 13 * * *"
+     vault_section = "entity-db2"
+   },
+   {
      name = "worksafe-job"
      trigger = "worksafe-notebook"
      cron = "0 10 * * *"
