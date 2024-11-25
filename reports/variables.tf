@@ -64,12 +64,6 @@ variable "jobs" {
      vault_section = "entity-db2"
    },
    {
-     name = "gc-notify-failures-job"
-     trigger = "gc-notify-failures-notebook"
-     cron = "0 1 * * *"
-     vault_section = "notify-db2"
-   },
-   {
      name = "worksafe-job"
      trigger = "worksafe-notebook"
      cron = "0 10 * * *"
