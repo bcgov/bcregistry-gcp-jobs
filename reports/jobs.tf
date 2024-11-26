@@ -1,8 +1,21 @@
+# Time Sleep resource to introduce a delay before job creation
+resource "time_sleep" "wait_for_image" {
+  for_each = {
+    for index, job in var.jobs : job.name => job
+  }
+
+  create_duration = "300s"
+}
+
+
 resource "google_cloud_run_v2_job" "job" {
   for_each   = {
     for index, job in var.jobs:
       job.name => job
   }
+
+  depends_on = [time_sleep.wait_for_image]
+
   name = each.value.name
   location = var.region
   launch_stage = "BETA"
