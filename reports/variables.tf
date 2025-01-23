@@ -53,9 +53,10 @@ variable "jobs" {
 
   default = [
    {
-     name = "phishing-scan-job"
-     trigger = "phishing-scan-notebook"
-     cron = "0 4 * * *"
+     name = "worksafe-job"
+     trigger = "worksafe-notebook"
+     cron = "0 10 * * *"
+     vault_section = "entity-db2"
    },
    {
      name = "dyedurham-job"
@@ -64,27 +65,26 @@ variable "jobs" {
      vault_section = "entity-db2"
    },
    {
+     name = "bn-failure-batch-job"
+     trigger = "bn-failure-batch-notebook"
+     cron = "00 11 * * *"
+     vault_section = "entity-db2"
+   },
+   {
+     name = "phishing-scan-job"
+     trigger = "phishing-scan-notebook"
+     cron = "0 4 * * *"
+   },
+   {
      name = "ar-prompt-filing-job"
      trigger = "ar-prompt-filing-notebook"
      cron = "00 06 * * *"
      vault_section = "entity-db2"
    },
    {
-     name = "worksafe-job"
-     trigger = "worksafe-notebook"
-     cron = "0 10 * * *"
-     vault_section = "entity-db2"
-   },
-   {
      name = "bn-processing-batch-job"
      trigger = "bn-processing-batch-notebook"
      cron = "00 06 * * *"
-     vault_section = "entity-db2"
-   },
-   {
-     name = "bn-failure-batch-job"
-     trigger = "bn-failure-batch-notebook"
-     cron = "00 11 * * *"
      vault_section = "entity-db2"
    },
   ]
