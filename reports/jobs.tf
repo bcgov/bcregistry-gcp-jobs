@@ -42,26 +42,6 @@ resource "google_cloud_run_v2_job" "job" {
         }
 
         env {
-          name = "GOOGLE_API_KEY"
-          value_source {
-            secret_key_ref {
-              secret  = data.google_secret_manager_secret_version.google_api_key_version.secret
-              version = "1"
-            }
-          }
-        }
-
-        env {
-          name = "GC_NOTIFY_KEY"
-          value_source {
-            secret_key_ref {
-              secret  = data.google_secret_manager_secret_version.gc_secret_version.secret
-              version = "1"
-            }
-          }
-        }
-
-        env {
           name  = "NOTIFY_CLIENT"
           value = local.client
         }
@@ -76,32 +56,16 @@ resource "google_cloud_run_v2_job" "job" {
           }
         }
 
-        env {
-          name = "BING_API_KEY"
-          value_source {
-            secret_key_ref {
-              secret  = data.google_secret_manager_secret_version.bing_api_key_version.secret
-              version = "1"
-            }
-          }
-        }
+        dynamic "env" {
+          for_each = each.value.custom_vars
 
-        env {
-          name = "BING_ID"
-          value_source {
-            secret_key_ref {
-              secret  = data.google_secret_manager_secret_version.bing_id_secret_version.secret
-              version = "1"
-            }
-          }
-        }
-
-        env {
-          name = "VIRUS_TOTAL_API_KEY"
-          value_source {
-            secret_key_ref {
-              secret  = data.google_secret_manager_secret_version.virus_total_api_key_version.secret
-              version = "1"
+          content {
+            name = env.value
+            value_source {
+              secret_key_ref {
+                secret  = data.google_secret_manager_secret_version.custom_secrets[env.value].secret
+                version = "1"
+              }
             }
           }
         }

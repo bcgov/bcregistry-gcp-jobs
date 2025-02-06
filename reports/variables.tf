@@ -13,6 +13,10 @@ variable "environment" {
   }
 }
 
+data "google_project" "project_info" {
+  project_id = var.environment.project_id
+}
+
 variable "region" {
     default = "northamerica-northeast1"
 }
@@ -47,6 +51,7 @@ variable "jobs" {
     trigger                = string
     vault_section          = optional(string)
     cron                   = string
+    custom_vars            = optional(list(string), [])
   }))
 
   description = "OpenShift database reindexing jobs"
@@ -74,6 +79,7 @@ variable "jobs" {
      name = "phishing-scan-job"
      trigger = "phishing-scan-notebook"
      cron = "0 4 * * *"
+     custom_vars = ["GOOGLE_API_KEY", "BING_API_KEY", "BING_ID", "VIRUS_TOTAL_API_KEY"]
    },
    {
      name = "ar-prompt-filing-job"

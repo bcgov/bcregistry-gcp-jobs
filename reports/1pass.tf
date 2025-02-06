@@ -30,7 +30,6 @@ locals {
   pass_values = {
     for index, job in var.jobs :
       job.name => merge(
-        # Extract values based on the job.vault_section
         job.vault_section != null ? {
           db_name = data.onepassword_item.database_env.section[index(data.onepassword_item.database_env.section.*.label, job.vault_section)].field[index(data.onepassword_item.database_env.section[index(data.onepassword_item.database_env.section.*.label, job.vault_section)].field.*.label, "database_name")].value,
           oc_svc = data.onepassword_item.database_env.section[index(data.onepassword_item.database_env.section.*.label, job.vault_section)].field[index(data.onepassword_item.database_env.section[index(data.onepassword_item.database_env.section.*.label, job.vault_section)].field.*.label, "database_host")].value,
