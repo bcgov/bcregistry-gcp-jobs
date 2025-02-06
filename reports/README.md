@@ -22,6 +22,19 @@ connect_to_db = 'postgresql://' + \
                 os.getenv('DB_HOST', '') + ':' + os.getenv('DB_PORT', '5432') + '/' + os.getenv('DB_NAME', '');
 ```
 
+To connect to Google Cloud database check out this [example](https://github.com/bcgov-registries/ops-support/blob/main/support/ops/bar/notebooks/EXAMPLE.ipynb). You can use ```google.cloud.sql.connector``` Python library and you would define a connection via a constructor:
+```
+def get_conn():
+    conn = connector.connect(
+        DB_HOST,
+        "pg8000",
+        user=DB_USER,
+        password=DB_PASSWORD,
+        db=DB_NAME
+    )
+    return conn
+```
+
 .env contains a list of environmental variables. The following variables are needed:
 
 REPORT_RECIPIENTS=... - comma separated list of report recipient emails
@@ -32,7 +45,7 @@ ERROR_EMAIL_RECIPIENTS=... - comma separated list of error recipient emails
 
 CRON_SCHEDULE="..." - cron schedule expression in double quotes that determines frequency of report runs, see https://crontab.guru for details
 
-VAULT=... - 1password section of 'database' vault, 5 values are accepted: auth, pay, namex, entity (for lear db), notify (for notify-api db)
+VAULT=... - 1password section of 'database' vault, 3 values are accepted for OpenShift databases: pay, namex, entity (for lear db). For data warehouse connection, hosted in Google Cloud, the value should be gcp-warehouse.
 
 
 ## Development Environment

@@ -1,7 +1,7 @@
 #! /bin/bash
 cd /opt/app-root
 . ./.env
-if [ ! -z $VAULT ]; then
+if [ ! -z "$VAULT" ] && [[ ! "$VAULT" =~ ^gcp- ]]; then
     echo 'run oc.sh'
     sh oc.sh &
 fi
