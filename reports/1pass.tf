@@ -28,19 +28,89 @@ data "onepassword_item" "api_env" {
 
 locals {
   pass_values = {
-    for index, job in var.jobs :
-      job.name => merge(
-        job.vault_section != null ? {
-          db_name = data.onepassword_item.database_env.section[index(data.onepassword_item.database_env.section.*.label, job.vault_section)].field[index(data.onepassword_item.database_env.section[index(data.onepassword_item.database_env.section.*.label, job.vault_section)].field.*.label, "database_name")].value,
-          oc_svc = data.onepassword_item.database_env.section[index(data.onepassword_item.database_env.section.*.label, job.vault_section)].field[index(data.onepassword_item.database_env.section[index(data.onepassword_item.database_env.section.*.label, job.vault_section)].field.*.label, "database_host")].value,
-          oc_token = data.onepassword_item.database_env.section[index(data.onepassword_item.database_env.section.*.label, job.vault_section)].field[index(data.onepassword_item.database_env.section[index(data.onepassword_item.database_env.section.*.label, job.vault_section)].field.*.label, "database_portforward_token")].value,
-          oc_namespace = data.onepassword_item.database_env.section[index(data.onepassword_item.database_env.section.*.label, job.vault_section)].field[index(data.onepassword_item.database_env.section[index(data.onepassword_item.database_env.section.*.label, job.vault_section)].field.*.label, "database_namespace")].value
-        } : {}
-      )
+    for index, job in var.jobs : job.name =>
+      job.vault_section != null ? merge(
+        {
+          db_name = data.onepassword_item.database_env.section[
+            index(data.onepassword_item.database_env.section[*].label, job.vault_section)
+          ].field[
+            index(
+              data.onepassword_item.database_env.section[
+                index(data.onepassword_item.database_env.section[*].label, job.vault_section)
+              ].field[*].label,
+              "database_name"
+            )
+          ].value
+        },
+        !startswith(job.vault_section, "gcp-") ? {
+          oc_svc = data.onepassword_item.database_env.section[
+            index(data.onepassword_item.database_env.section[*].label, job.vault_section)
+          ].field[
+            index(
+              data.onepassword_item.database_env.section[
+                index(data.onepassword_item.database_env.section[*].label, job.vault_section)
+              ].field[*].label,
+              "database_host"
+            )
+          ].value,
+          oc_token = data.onepassword_item.database_env.section[
+            index(data.onepassword_item.database_env.section[*].label, job.vault_section)
+          ].field[
+            index(
+              data.onepassword_item.database_env.section[
+                index(data.onepassword_item.database_env.section[*].label, job.vault_section)
+              ].field[*].label,
+              "database_portforward_token"
+            )
+          ].value,
+          oc_namespace = data.onepassword_item.database_env.section[
+            index(data.onepassword_item.database_env.section[*].label, job.vault_section)
+          ].field[
+            index(
+              data.onepassword_item.database_env.section[
+                index(data.onepassword_item.database_env.section[*].label, job.vault_section)
+              ].field[*].label,
+              "database_namespace"
+            )
+          ].value
+        } : {
+          db_user =  data.onepassword_item.database_env.section[
+            index(data.onepassword_item.database_env.section[*].label, job.vault_section)
+          ].field[
+            index(
+              data.onepassword_item.database_env.section[
+                index(data.onepassword_item.database_env.section[*].label, job.vault_section)
+              ].field[*].label,
+              "database_user"
+            )
+          ].value
+          instance_connection =  data.onepassword_item.database_env.section[
+            index(data.onepassword_item.database_env.section[*].label, job.vault_section)
+          ].field[
+            index(
+              data.onepassword_item.database_env.section[
+                index(data.onepassword_item.database_env.section[*].label, job.vault_section)
+              ].field[*].label,
+              "database_instance_connection_name"
+            )
+          ].value
+        }
+      ) : {}
   }
-
 
   notify_url = data.onepassword_item.api_env.section[index(data.onepassword_item.api_env.section.*.label, "notify-api")].field[index(data.onepassword_item.api_env.section[index(data.onepassword_item.api_env.section.*.label, "notify-api")].field.*.label, "notify_api_url")].value
   client = data.onepassword_item.keycloak_env.section[index(data.onepassword_item.keycloak_env.section.*.label, "entity-notebook-service-account")].field[index(data.onepassword_item.keycloak_env.section[index(data.onepassword_item.keycloak_env.section.*.label, "entity-notebook-service-account")].field.*.label, "entity_notebook_service_account_client_id")].value
   kc_url = data.onepassword_item.keycloak_env.section[index(data.onepassword_item.keycloak_env.section.*.label, "base")].field[index(data.onepassword_item.keycloak_env.section[index(data.onepassword_item.keycloak_env.section.*.label, "base")].field.*.label, "keycloak_auth_token_url")].value
 }
+
+
+# output "debug_job_envs" {
+#   value = {
+#     for job in var.jobs : job.name => {
+#       db_name      = try(local.pass_values[job.name].db_name, null)
+#       oc_namespace = try(local.pass_values[job.name].oc_namespace, null)
+#       oc_token     = try(local.pass_values[job.name].oc_token, null)
+#       oc_svc       = try(local.pass_values[job.name].oc_svc, null)
+#     }
+#   }
+# }

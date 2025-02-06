@@ -88,6 +88,20 @@ resource "google_cloud_run_v2_job" "job" {
             value = env.value
           }
         }
+
+        dynamic "env" {
+          for_each = try(each.value.vault_section != null && startswith(each.value.vault_section, "gcp-"), false) ? {
+            for key, value in {
+              "DB_USER"      = local.pass_values[each.key].db_user
+              "DB_NAME"      = local.pass_values[each.key].db_name
+              "DB_INSTANCE_CONNECTION_NAME"  = local.pass_values[each.key].instance_connection
+            } : key => value if value != null
+          } : {}
+          content {
+            name = env.key
+            value = env.value
+          }
+        }
       }
     }
   }
