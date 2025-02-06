@@ -9,133 +9,120 @@ resource "time_sleep" "wait_for_image" {
 
 
 resource "google_cloud_run_v2_job" "job" {
-  for_each   = {
-    for index, job in var.jobs:
-      job.name => job
+  for_each = {
+    for index, job in var.jobs : job.name => job
   }
 
   depends_on = [time_sleep.wait_for_image]
 
-  name = each.value.name
-  location = var.region
-  launch_stage = "BETA"
+  name               = each.value.name
+  location           = var.region
+  launch_stage       = "BETA"
   deletion_protection = false
 
   template {
     template {
       containers {
         image = "${var.region}-docker.pkg.dev/c4hnrd-dev/${var.registry_repo}/${each.value.trigger}-image:${var.environment.tag}"
+
+        # Static environment variables
         env {
-          name = "DATA_DIR"
+          name  = "DATA_DIR"
           value = var.data_dir
         }
+
         env {
-          name = "DB_HOST"
-          value = var.db_connection.host
+          name  = "KC_URL"
+          value = local.kc_url
         }
+
         env {
-          name = "DB_PORT"
-          value = var.db_connection.port
+          name  = "NOTIFY_API_URL"
+          value = local.notify_url
         }
-        env {
-          name = "DB_NAME"
-          value = local.pass_values[each.key].db_name
-        }
-        env {
-          name = "DB_USER"
-          value = var.db_connection.db_user
-        }
-        env {
-          name = "OC_SERVER"
-          value = var.db_connection.oc_server
-        }
-        env {
-          name = "OC_NAMESPACE"
-          value = local.pass_values[each.key].oc_namespace
-        }
-        env {
-          name = "OC_TOKEN"
-          value_source {
-            secret_key_ref {
-              secret = data.google_secret_manager_secret_version.oc_token_version[each.key].secret
-              version = "1"
-            }
-          }
-        }
-        env {
-          name = "DB_SVC_NAME"
-          value_source {
-            secret_key_ref {
-              secret = data.google_secret_manager_secret_version.oc_svc_version[each.key].secret
-              version = "1"
-            }
-          }
-        }
-        env {
-          name = "NOTIFY_CLIENT"
-          value = local.client
-        }
-        env {
-          name = "NOTIFY_CLIENT_SECRET"
-          value_source {
-            secret_key_ref {
-              secret = data.google_secret_manager_secret_version.client_secret_version.secret
-              version = "1"
-            }
-          }
-        }
-        env {
-          name = "GC_NOTIFY_KEY"
-          value_source {
-            secret_key_ref {
-              secret = data.google_secret_manager_secret_version.gc_secret_version.secret
-              version = "1"
-            }
-          }
-        }
+
         env {
           name = "GOOGLE_API_KEY"
           value_source {
             secret_key_ref {
-              secret = data.google_secret_manager_secret_version.google_api_key_version.secret
+              secret  = data.google_secret_manager_secret_version.google_api_key_version.secret
               version = "1"
             }
           }
         }
+
+        env {
+          name = "GC_NOTIFY_KEY"
+          value_source {
+            secret_key_ref {
+              secret  = data.google_secret_manager_secret_version.gc_secret_version.secret
+              version = "1"
+            }
+          }
+        }
+
+        env {
+          name  = "NOTIFY_CLIENT"
+          value = local.client
+        }
+
+        env {
+          name = "NOTIFY_CLIENT_SECRET"
+          value_source {
+            secret_key_ref {
+              secret  = data.google_secret_manager_secret_version.client_secret_version.secret
+              version = "1"
+            }
+          }
+        }
+
         env {
           name = "BING_API_KEY"
           value_source {
             secret_key_ref {
-              secret = data.google_secret_manager_secret_version.bing_api_key_version.secret
+              secret  = data.google_secret_manager_secret_version.bing_api_key_version.secret
               version = "1"
             }
           }
         }
+
         env {
           name = "BING_ID"
           value_source {
             secret_key_ref {
-              secret = data.google_secret_manager_secret_version.bing_id_secret_version.secret
+              secret  = data.google_secret_manager_secret_version.bing_id_secret_version.secret
               version = "1"
             }
           }
         }
+
         env {
           name = "VIRUS_TOTAL_API_KEY"
           value_source {
             secret_key_ref {
-              secret = data.google_secret_manager_secret_version.virus_total_api_key_version.secret
+              secret  = data.google_secret_manager_secret_version.virus_total_api_key_version.secret
               version = "1"
             }
           }
         }
-        env {
-          name = "KC_URL"
-          value = local.kc_url
-        }
-        env {
-          name = "NOTIFY_API_URL"
-          value = local.notify_url
+
+        dynamic "env" {
+          for_each = try(each.value.vault_section != null && !startswith(each.value.vault_section, "gcp-"), false) ? {
+            for key, value in {
+              "DB_HOST"      = var.db_connection_ocp.host
+              "DB_PORT"      = var.db_connection_ocp.port
+              "DB_USER"      = var.db_connection_ocp.db_user
+              "OC_SERVER"    = var.db_connection_ocp.oc_server
+              "DB_NAME"      = local.pass_values[each.key].db_name
+              "OC_NAMESPACE" = local.pass_values[each.key].oc_namespace
+              "OC_TOKEN"     = local.pass_values[each.key].oc_token
+              "DB_SVC_NAME"  = local.pass_values[each.key].oc_svc
+            } : key => value if value != null
+          } : {}
+          content {
+            name = env.key
+            value = env.value
+          }
         }
       }
     }

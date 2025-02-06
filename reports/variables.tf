@@ -25,7 +25,7 @@ variable "registry_repo" {
     default = "job-repo"
 }
 
-variable "db_connection" {
+variable "db_connection_ocp" {
   type = object({
     host = string
     port = string
@@ -45,7 +45,7 @@ variable "jobs" {
   type = list(object({
     name                   = string
     trigger                = string
-    vault_section          = optional(string, "notify-db2")
+    vault_section          = optional(string)
     cron                   = string
   }))
 
@@ -89,4 +89,3 @@ variable "jobs" {
    },
   ]
 }
-
