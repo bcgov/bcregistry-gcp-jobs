@@ -26,10 +26,9 @@ To connect to Google Cloud database check out this [example](https://github.com/
 ```
 def get_conn():
     conn = connector.connect(
-        DB_HOST,
+        DB_INSTANCE_CONNECTION_NAME,
         "pg8000",
         user=DB_USER,
-        password=DB_PASSWORD,
         db=DB_NAME
     )
     return conn
