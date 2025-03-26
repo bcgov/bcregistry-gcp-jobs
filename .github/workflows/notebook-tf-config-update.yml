@@ -60,8 +60,8 @@ jobs:
                 echo "\"${var_value}-db2\"" >> new_variables.tf
                 ;;
               CUSTOM_VARS)
-                # Remove any quotes and split by comma
-                cleaned_vars=$(echo "$var_value" | tr -d '"' | tr -d "'")
+                # Remove any quotes and whitespace, then split by comma
+                cleaned_vars=$(echo "$var_value" | tr -d '"' | tr -d "'" | tr -d ' ' | tr -d '\t')
                 IFS=',' read -ra vars_array <<< "$cleaned_vars"
                 # Format as Terraform list
                 echo -n "     custom_vars = [" >> new_variables.tf
