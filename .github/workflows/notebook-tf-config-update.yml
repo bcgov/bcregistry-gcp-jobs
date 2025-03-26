@@ -59,6 +59,17 @@ jobs:
                 echo -n "     vault_section = " >> new_variables.tf
                 echo "\"${var_value}-db2\"" >> new_variables.tf
                 ;;
+              CUSTOM_VARS)
+                # Remove any quotes and split by comma
+                cleaned_vars=$(echo "$var_value" | tr -d '"' | tr -d "'")
+                IFS=',' read -ra vars_array <<< "$cleaned_vars"
+                # Format as Terraform list
+                echo -n "     custom_vars = [" >> new_variables.tf
+                for var in "${vars_array[@]}"; do
+                  echo -n "\"$var\"," >> new_variables.tf
+                done
+                echo "]" >> new_variables.tf
+                ;;
               *)
                 echo "skipping"
                 ;;
