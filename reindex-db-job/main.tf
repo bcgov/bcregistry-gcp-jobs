@@ -1,11 +1,19 @@
+# terraform {
+#   cloud {
+#     organization = "BCRegistry"
+#     workspaces {
+#       name = "reindex-db-job-dev"
+#     }
+#   }
+# }
+
 terraform {
-  cloud {
-    organization = "BCRegistry"
-    workspaces {
-      name = "reindex-db-job-dev"
-    }
+  backend "gcs" {
+    bucket = "common-tools-terraform-state"
+    prefix = "jobs/reindex-ocp-db-job-prod"
   }
 }
+
 
 terraform {
   required_providers {

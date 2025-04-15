@@ -1,9 +1,16 @@
+# terraform {
+#   cloud {
+#     organization = "BCRegistry"
+#     workspaces {
+#       name = "gcp-build-triggers-dev"
+#     }
+#   }
+# }
+
 terraform {
-  cloud {
-    organization = "BCRegistry"
-    workspaces {
-      name = "gcp-build-triggers-dev"
-    }
+  backend "gcs" {
+    bucket = "common-tools-terraform-state"
+    prefix = "jobs/build-triggers"
   }
 }
 

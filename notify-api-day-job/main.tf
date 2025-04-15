@@ -1,9 +1,16 @@
+# terraform {
+#   cloud {
+#     organization = "BCRegistry"
+#     workspaces {
+#       name = "gcp-notify-api-job-dev"
+#     }
+#   }
+# }
+
 terraform {
-  cloud {
-    organization = "BCRegistry"
-    workspaces {
-      name = "gcp-notify-api-job-dev"
-    }
+  backend "gcs" {
+    bucket = "common-tools-terraform-state"
+    prefix = "jobs/notify-api-job-prod"
   }
 }
 

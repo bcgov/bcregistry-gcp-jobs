@@ -1,9 +1,16 @@
+# terraform {
+#   cloud {
+#     organization = "BCRegistry"
+#     workspaces {
+#       name = "reports-job-dev"
+#     }
+#   }
+# }
+
 terraform {
-  cloud {
-    organization = "BCRegistry"
-    workspaces {
-      name = "reports-job-dev"
-    }
+  backend "gcs" {
+    bucket = "common-tools-terraform-state"
+    prefix = "jobs/reports-job-prod"
   }
 }
 
