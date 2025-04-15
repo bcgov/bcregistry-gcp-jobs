@@ -24,19 +24,9 @@ variable "jobs" {
 
   default = [
     {
-      name          = "reindex-auth-db-job"
-      trigger       = "reindex-db-job"
-      vault_section = "auth-db2"
-    },
-    {
       name          = "reindex-pay-db-job"
       trigger       = "reindex-db-job"
       vault_section = "pay-db2"
-    },
-    {
-      name          = "reindex-namex-db-job"
-      trigger       = "reindex-db-job"
-      vault_section = "namex-db2"
     },
     {
       name          = "reindex-lear-db-job"
