@@ -101,9 +101,7 @@ jobs:
         git push
   run-terraform-apply:
     needs: update-tf-config
-    uses: bcgov/bcregistry-gcp-jobs/.github/workflows/terraform-common.yml@main
+    uses: bcgov/bcregistry-gcp-jobs/.github/workflows/terraform-common-gcs.yml@main
     with:
       gcp_job: reports
       gcp_env: prod
-    secrets:
-      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}

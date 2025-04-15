@@ -1,0 +1,54 @@
+name: 'Terraform-Common'
+
+on:
+  workflow_call:
+    inputs:
+      gcp_job:
+        required: true
+        type: string
+      gcp_env:
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    environment: production
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        ref: tools
+
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+
+    - name: Apply env
+      working-directory: ${{ inputs.gcp_job }}
+      run: sed -i 's/dev"/${{ inputs.gcp_env }}"/g' variables.tf; sed -i 's/dev"/${{ inputs.gcp_env }}"/g' main.tf
+
+    - name: Terraform Init
+      run: terraform init -input=false
+      working-directory: ${{ inputs.gcp_job }}
+
+    - name: Terraform Plan
+      run: terraform plan -input=false
+      working-directory: ${{ inputs.gcp_job }}
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve -input=false
+      working-directory: ${{ inputs.gcp_job }}
