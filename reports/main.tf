@@ -10,7 +10,7 @@
 terraform {
   backend "gcs" {
     bucket = "common-tools-terraform-state"
-    prefix = "jobs/reports-job-prod"
+    prefix = "jobs/reports-prod"
   }
 }
 
