@@ -90,7 +90,7 @@ variable "jobs" {
    {
      name = "phishing-scan-job"
      trigger = "phishing-scan-notebook"
-     cron = "0 4 * * *"
+     cron = "10 4 * * *"
      custom_vars = ["GOOGLE_API_KEY","BING_API_KEY","BING_ID","VIRUS_TOTAL_API_KEY",]
    },
   ]
