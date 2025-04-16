@@ -57,14 +57,6 @@ jobs:
         terraform_version: 1.4.2
         terraform_wrapper: false
 
-    - name: Verify GCP Access
-      run: |
-        echo "Authenticated as:"
-        gcloud auth list
-        echo "Project info:"
-        gcloud config get-value project
-        echo "GOOGLE_APPLICATION_CREDENTIALS: $GOOGLE_APPLICATION_CREDENTIALS"
-
     - name: Apply environment config
       working-directory: ${{ inputs.gcp_job }}
       run: |
@@ -83,22 +75,23 @@ jobs:
     - name: Terraform Init
       working-directory: ${{ inputs.gcp_job }}
       run: |
-        export OP_CONNECT_TOKEN="${{ secrets.OP_CONNECT_TOKEN }}"
-        export OP_CONNECT_HOST="${{ secrets.OP_CONNECT_HOST }}"
         terraform init \
           -backend-config="bucket=common-tools-terraform-state" \
           -backend-config="prefix=jobs/${{ inputs.gcp_job }}-${{ inputs.gcp_env }}" \
           -reconfigure \
           -input=false
+      env:
+        OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
+        OP_CONNECT_HOST: ${{ secrets.OP_CONNECT_HOST }}
     - name: Terraform Plan
       working-directory: ${{ inputs.gcp_job }}
-      run: |
-        export OP_CONNECT_TOKEN="${{ secrets.OP_CONNECT_TOKEN }}"
-        export OP_CONNECT_HOST="${{ secrets.OP_CONNECT_HOST }}"
-        terraform plan -input=false
+      run: terraform plan -input=false
+      env:
+        OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
+        OP_CONNECT_HOST: ${{ secrets.OP_CONNECT_HOST }}
     - name: Terraform Apply
       working-directory: ${{ inputs.gcp_job }}
-      run: |
-        export OP_CONNECT_TOKEN="${{ secrets.OP_CONNECT_TOKEN }}"
-        export OP_CONNECT_HOST="${{ secrets.OP_CONNECT_HOST }}"
-        terraform apply -auto-approve -input=false
+      run: terraform apply -auto-approve -input=false
+      env:
+        OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
+        OP_CONNECT_HOST: ${{ secrets.OP_CONNECT_HOST }}
