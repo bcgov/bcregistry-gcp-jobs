@@ -32,3 +32,5 @@ jobs:
       gcp_env: ${{ github.event.inputs.gcp_env }}
     secrets:
       GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+      OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
+      OP_CONNECT_HOST: ${{ secrets.OP_CONNECT_HOST }}

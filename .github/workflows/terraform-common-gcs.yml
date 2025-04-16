@@ -12,7 +12,10 @@ on:
     secrets:
       GCP_SA_KEY:
         required: true
-
+      OP_CONNECT_TOKEN:
+        required: true
+      OP_CONNECT_HOST:
+        required: true
 permissions:
   contents: read
   id-token: write
