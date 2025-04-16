@@ -26,9 +26,9 @@ permissions:
 
 jobs:
   run-terraform-apply:
-    uses: bcgov/bcregistry-gcp-jobs/.github/workflows/terraform-common.yml@main
+    uses: bcgov/bcregistry-gcp-jobs/.github/workflows/terraform-common-gcs.yml@main
     with:
       gcp_job: ${{ github.event.inputs.gcp_job }}
       gcp_env: ${{ github.event.inputs.gcp_env }}
     secrets:
-      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}

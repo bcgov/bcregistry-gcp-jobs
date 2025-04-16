@@ -1,4 +1,4 @@
-name: 'Terraform-Common'
+name: 'Terraform-Common-GCS'
 
 on:
   workflow_call:
@@ -9,9 +9,13 @@ on:
       gcp_env:
         type: string
         required: true
+    secrets:
+      GCP_SA_KEY:
+        required: true
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   terraform:
@@ -25,30 +29,75 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         ref: tools
 
     - name: Authenticate to Google Cloud
+      id: auth
       uses: google-github-actions/auth@v1
       with:
         credentials_json: ${{ secrets.GCP_SA_KEY }}
+        create_credentials_file: true
+        export_environment_variables: true
+        access_token_lifetime: 3600s
+        access_token_scopes: |
+          https://www.googleapis.com/auth/cloud-platform
+          https://www.googleapis.com/auth/compute
 
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
 
-    - name: Apply env
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.4.2
+        terraform_wrapper: false
+
+    - name: Verify GCP Access
+      run: |
+        echo "Authenticated as:"
+        gcloud auth list
+        echo "Project info:"
+        gcloud config get-value project
+        echo "GOOGLE_APPLICATION_CREDENTIALS: $GOOGLE_APPLICATION_CREDENTIALS"
+
+    - name: Apply environment config
       working-directory: ${{ inputs.gcp_job }}
-      run: sed -i 's/dev"/${{ inputs.gcp_env }}"/g' variables.tf; sed -i 's/dev"/${{ inputs.gcp_env }}"/g' main.tf
+      run: |
+        sed -i 's/dev"/${{ inputs.gcp_env }}"/g' variables.tf
+        sed -i 's/dev"/${{ inputs.gcp_env }}"/g' main.tf
+
+    - name: Clear Terraform cache
+      run: |
+        # Remove all cached Terraform files
+        rm -rf ~/.terraform.d/
+        rm -rf ~/.terraformrc
+        rm -rf .terraform/
+        rm -f .terraform.lock.hcl
+      working-directory: ${{ inputs.gcp_job }}
 
     - name: Terraform Init
-      run: terraform init -input=false
       working-directory: ${{ inputs.gcp_job }}
-
+      run: |
+        # Force clean initialization
+        terraform init \
+          -backend-config="bucket=common-tools-terraform-state" \
+          -backend-config="prefix=jobs/${{ inputs.gcp_job }}-${{ inputs.gcp_env }}" \
+          -reconfigure \
+          -input=false
+      env:
+          OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
+          OP_CONNECT_HOST: ${{ secrets.OP_CONNECT_HOST }}
     - name: Terraform Plan
+      working-directory: ${{ inputs.gcp_job }}
       run: terraform plan -input=false
-      working-directory: ${{ inputs.gcp_job }}
-
+      env:
+          OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
+          OP_CONNECT_HOST: ${{ secrets.OP_CONNECT_HOST }}
     - name: Terraform Apply
-      run: terraform apply -auto-approve -input=false
       working-directory: ${{ inputs.gcp_job }}
+      run: terraform apply -auto-approve -input=false
+      env:
+          OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
+          OP_CONNECT_HOST: ${{ secrets.OP_CONNECT_HOST }}
