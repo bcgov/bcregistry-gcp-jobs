@@ -85,8 +85,6 @@ jobs:
       run: |
         export OP_CONNECT_TOKEN="${{ secrets.OP_CONNECT_TOKEN }}"
         export OP_CONNECT_HOST="${{ secrets.OP_CONNECT_HOST }}"
-        echo "OP_CONNECT_TOKEN: ${OP_CONNECT_TOKEN:0:4}..."
-        echo "OP_CONNECT_HOST:  ${OP_CONNECT_HOST:0:4}..."
         terraform init \
           -backend-config="bucket=common-tools-terraform-state" \
           -backend-config="prefix=jobs/${{ inputs.gcp_job }}-${{ inputs.gcp_env }}" \
@@ -97,14 +95,10 @@ jobs:
       run: |
         export OP_CONNECT_TOKEN="${{ secrets.OP_CONNECT_TOKEN }}"
         export OP_CONNECT_HOST="${{ secrets.OP_CONNECT_HOST }}"
-        echo "OP_CONNECT_TOKEN: ${OP_CONNECT_TOKEN:0:4}..."
-        echo "OP_CONNECT_HOST:  ${OP_CONNECT_HOST:0:4}..."
         terraform plan -input=false
     - name: Terraform Apply
       working-directory: ${{ inputs.gcp_job }}
       run: |
         export OP_CONNECT_TOKEN="${{ secrets.OP_CONNECT_TOKEN }}"
         export OP_CONNECT_HOST="${{ secrets.OP_CONNECT_HOST }}"
-        echo "OP_CONNECT_TOKEN: ${OP_CONNECT_TOKEN:0:4}..."
-        echo "OP_CONNECT_HOST:  ${OP_CONNECT_HOST:0:4}..."
         terraform apply -auto-approve -input=false
