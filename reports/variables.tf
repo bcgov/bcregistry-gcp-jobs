@@ -64,16 +64,10 @@ variable "jobs" {
      vault_section = "entity-db2"
    },
    {
-     name = "ar-prompt-filing-job"
-     trigger = "ar-prompt-filing-notebook"
-     cron = "00 06 * * *"
+     name = "worksafe-job"
+     trigger = "worksafe-notebook"
+     cron = "0 10 * * *"
      vault_section = "entity-db2"
-   },
-   {
-     name = "phishing-scan-job"
-     trigger = "phishing-scan-notebook"
-     cron = "0 4 * * *"
-     custom_vars = ["GOOGLE_API_KEY","BING_API_KEY","BING_ID","VIRUS_TOTAL_API_KEY",]
    },
    {
      name = "bn-failure-batch-job"
@@ -82,14 +76,20 @@ variable "jobs" {
      vault_section = "entity-db2"
    },
    {
-     name = "worksafe-job"
-     trigger = "worksafe-notebook"
-     cron = "0 10 * * *"
+     name = "bn-processing-batch-job"
+     trigger = "bn-processing-batch-notebook"
+     cron = "00 06 * * *"
      vault_section = "entity-db2"
    },
    {
-     name = "bn-processing-batch-job"
-     trigger = "bn-processing-batch-notebook"
+     name = "phishing-scan-job"
+     trigger = "phishing-scan-notebook"
+     cron = "0 3 * * *"
+     custom_vars = ["GOOGLE_API_KEY","BING_API_KEY","BING_ID","VIRUS_TOTAL_API_KEY",]
+   },
+   {
+     name = "ar-prompt-filing-job"
+     trigger = "ar-prompt-filing-notebook"
      cron = "00 06 * * *"
      vault_section = "entity-db2"
    },
