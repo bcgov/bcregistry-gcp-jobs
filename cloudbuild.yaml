@@ -48,7 +48,7 @@ steps:
               echo "~~~"
               echo $image_name
               echo "~~~"
-              gcloud builds submit $subdir --config=${config} --substitutions _SHORT_SHA=$SHORT_SHA,_LOCATION=$_LOCATION,_IMAGE=$image_name,_REGISTRY_REPO=$_REGISTRY_REPO,_TAG=$_TAG
+              gcloud builds submit $subdir --config=${config} --substitutions _SHORT_SHA=$SHORT_SHA,_LOCATION=$_LOCATION,_IMAGE=$image_name,_REGISTRY_REPO=$_REGISTRY_REPO,_TAG=$_TAG --region=northamerica-northeast1 --default-buckets-behavior=REGIONAL_USER_OWNED_BUCKET
           done < subdirs.txt
           continue
         else
@@ -59,7 +59,7 @@ steps:
           echo "no such file"
           continue
         fi
-        gcloud builds submit $line --config=${config} --substitutions _SHORT_SHA=$SHORT_SHA,_LOCATION=$_LOCATION,_IMAGE=$image_name,_REGISTRY_REPO=$_REGISTRY_REPO,_TAG=$_TAG
+        gcloud builds submit $line --config=${config} --substitutions _SHORT_SHA=$SHORT_SHA,_LOCATION=$_LOCATION,_IMAGE=$image_name,_REGISTRY_REPO=$_REGISTRY_REPO,_TAG=$_TAG --region=northamerica-northeast1 --default-buckets-behavior=REGIONAL_USER_OWNED_BUCKET
 
       done < /workspace/diff.txt
 options:
