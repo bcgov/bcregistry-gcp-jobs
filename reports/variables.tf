@@ -61,25 +61,25 @@ variable "jobs" {
      name = "dyedurham-job"
      trigger = "dyedurham-notebook"
      cron = "0 8 1 * *"
-     vault_section = "entity-db2"
+     vault_section = "gcp-warehouse-db2"
    },
    {
      name = "worksafe-job"
      trigger = "worksafe-notebook"
      cron = "0 10 * * *"
-     vault_section = "entity-db2"
+     vault_section = "gcp-warehouse-db2"
    },
    {
      name = "bn-failure-batch-job"
      trigger = "bn-failure-batch-notebook"
      cron = "00 11 * * *"
-     vault_section = "entity-db2"
+     vault_section = "gcp-warehouse-db2"
    },
    {
      name = "bn-processing-batch-job"
      trigger = "bn-processing-batch-notebook"
      cron = "00 06 * * *"
-     vault_section = "entity-db2"
+     vault_section = "gcp-warehouse-db2"
    },
    {
      name = "phishing-scan-job"
@@ -91,7 +91,7 @@ variable "jobs" {
      name = "ar-prompt-filing-job"
      trigger = "ar-prompt-filing-notebook"
      cron = "00 06 * * *"
-     vault_section = "entity-db2"
+     vault_section = "gcp-warehouse-db2"
    },
   ]
 }
