@@ -20,11 +20,9 @@ RUN mkdir /opt/app-root/data && chmod 777 /opt/app-root/data
 
 WORKDIR /opt/app-root
 
-# install the oc client tools
-ADD https://github.com/openshift/origin/releases/download/$OC_VERSION/$OC_RELEASE.tar.gz /opt/oc/release.tar.gz
-RUN tar --strip-components=1 -xzvf  /opt/oc/release.tar.gz -C /opt/oc/ && \
-    mv /opt/oc/oc /usr/bin/ && \
-    rm -rf /opt/oc
+# Install git and other necessary packages
+RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+
 # Install the requirements
 COPY ./requirements.txt .
 
