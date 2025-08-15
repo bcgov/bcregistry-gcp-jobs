@@ -15,36 +15,74 @@ Currently, the workflow expects 2 files for each notebook subdirectory: .env and
 >>>       |-- .env
 >>>       |-- worksafe_report.ipynb
 
-Connection to OpenShift database in *.ipynb is established via (note the names of environmental variables used - DB_USER, DB_PASS, DB_HOST, DB_PORT - these will be supplied by the google cloud environment):
+## Database Connection
+
+**Note: This infrastructure only supports GCP Cloud SQL database connections. OpenShift database connections are no longer supported.**
+
+Database connection in *.ipynb notebooks is established using Google Cloud SQL connector. The required environment variables are:
+- `DB_USER` - Database username
+- `DB_NAME` - Database name
+- `DB_INSTANCE_CONNECTION_NAME` - Cloud SQL instance connection name (format: `project:region:instance`)
+- `DB_PASSWORD` - Database password (optional for IAM authentication)
+- `VAULT=gcp-warehouse` - alias for 1password database vault section, default gcp-warehouse is recommended
+
+### Required Dependencies
+
+Add these packages to your requirements.txt:
 ```
-connect_to_db = 'postgresql://' + \
-                os.getenv('DB_USER', '') + ":" + os.getenv('DB_PASS', '') +'@' + \
-                os.getenv('DB_HOST', '') + ':' + os.getenv('DB_PORT', '5432') + '/' + os.getenv('DB_NAME', '');
+cloud-sql-python-connector[pg8000]
+pg8000
+sqlalchemy
+ipython-sql
 ```
 
-To connect to Google Cloud database check out this [example](https://github.com/bcgov-registries/ops-support/blob/main/support/ops/bar/notebooks/EXAMPLE.ipynb). You can use ```google.cloud.sql.connector``` Python library and you would define a connection via a constructor:
-```
+### Connection Setup
+
+Use the Google Cloud SQL connector to establish database connections:
+
+```python
+import os
+import sqlalchemy
+from google.cloud.sql.connector import Connector
+import pg8000
+
+# Initialize Connector object
+connector = Connector()
+
 def get_conn():
+    """Create a connection to Google Cloud SQL using Cloud SQL connector."""
     conn = connector.connect(
-        DB_INSTANCE_CONNECTION_NAME,
+        os.getenv('DB_INSTANCE_CONNECTION_NAME'),  # Cloud SQL instance connection name
         "pg8000",
-        user=DB_USER,
-        db=DB_NAME
+        user=os.getenv('DB_USER'),
+        password=os.getenv('DB_PASSWORD', ''),  # Password might be empty for IAM auth
+        db=os.getenv('DB_NAME')
     )
     return conn
+
+# Create SQLAlchemy engine using Cloud SQL connector
+engine = sqlalchemy.create_engine(
+    "postgresql+pg8000://",
+    creator=get_conn,
+)
+
+# Set up SQL magic to use the new engine
+%sql engine
 ```
 
 .env contains a list of environmental variables. The following variables are needed:
 
-REPORT_RECIPIENTS=... - comma separated list of report recipient emails
+**Report Configuration:**
+- `REPORT_RECIPIENTS=...` - comma separated list of report recipient emails
+- `REPORT_SUBJECT=...` - email subject
+- `ERROR_EMAIL_RECIPIENTS=...` - comma separated list of error recipient emails
+- `CRON_SCHEDULE="..."` - cron schedule expression in double quotes that determines frequency of report runs, see https://crontab.guru for details
 
-REPORT_SUBJECT=... - email subject
-
-ERROR_EMAIL_RECIPIENTS=... - comma separated list of error recipient emails
-
-CRON_SCHEDULE="..." - cron schedule expression in double quotes that determines frequency of report runs, see https://crontab.guru for details
-
-VAULT=... - 1password section of 'database' vault, 3 values are accepted for OpenShift databases: pay, namex, entity (for lear db). For data warehouse connection, hosted in Google Cloud, the value should be gcp-warehouse.
+**Database Configuration (GCP Cloud SQL only):**
+- `DB_USER=...` - Database username
+- `DB_NAME=...` - Database name
+- `DB_INSTANCE_CONNECTION_NAME=...` - Cloud SQL instance connection name (format: `project:region:instance`)
+- `DB_PASSWORD=...` - Database password (optional for IAM authentication)
 
 
 ## Development Environment
