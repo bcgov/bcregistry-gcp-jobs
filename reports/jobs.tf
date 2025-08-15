@@ -22,7 +22,7 @@ resource "google_cloud_run_v2_job" "job" {
 
   template {
     template {
-      service_account = replace(var.db_connection_ocp.db_user, ".iam", ".iam.gserviceaccount.com")
+      service_account = try(each.value.vault_section != null && startswith(each.value.vault_section, "gcp-"), false) ? replace(local.pass_values[each.key].db_user, ".iam", ".iam.gserviceaccount.com") : "${var.environment.sa}@${var.environment.project_id}.iam.gserviceaccount.com"
 
       containers {
         image = "${var.region}-docker.pkg.dev/c4hnrd-dev/${var.registry_repo}/${each.value.trigger}-image:${var.environment.tag}"
