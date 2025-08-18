@@ -9,7 +9,6 @@ on:
         description: 'Directory of the job to (re-)deploy'
         options:
         - notify-api-day-job
-        - reindex-db-job
       gcp_tag:
         required: true
         type: choice

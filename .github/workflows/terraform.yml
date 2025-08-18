@@ -9,7 +9,6 @@ on:
         description: 'Directory of the job to (re-)deploy'
         options:
         - notify-api-day-job
-        - reindex-db-job
         - build-triggers
         - reports
       gcp_env:
