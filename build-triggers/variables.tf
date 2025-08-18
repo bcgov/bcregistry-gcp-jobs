@@ -21,9 +21,6 @@ variable "jobs" {
       trigger    = "notify-api-day-job"
     },
     {
-      trigger    = "reindex-db-job"
-    },
-    {
       trigger    = "notebooks"
     },
     {
