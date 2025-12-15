@@ -60,49 +60,49 @@ variable "jobs" {
    {
      name = "auth-account-stats-job"
      trigger = "auth-account-stats-notebook"
-     cron = "0 7 * * 1"
+     cron = 0 7 * * 1
      vault_section = "gcp-warehouse-db2"
    },
    {
      name = "dyedurham-job"
      trigger = "dyedurham-notebook"
-     cron = "0 8 1 * *"
+     cron = 0 8 1 * *
      vault_section = "gcp-warehouse-db2"
    },
    {
      name = "bn-failure-batch-job"
      trigger = "bn-failure-batch-notebook"
-     cron = "00 11 * * *"
+     cron = 00 11 * * *
      vault_section = "gcp-warehouse-db2"
    },
    {
      name = "phishing-scan-job"
      trigger = "phishing-scan-notebook"
-     cron = "0 3 * * *"
+     cron = 0 3 * * *
      custom_vars = ["GOOGLE_API_KEY","BING_API_KEY","BING_ID","VIRUS_TOTAL_API_KEY",]
    },
    {
      name = "worksafe-job"
      trigger = "worksafe-notebook"
-     cron = "0 10 * * *"
+     cron = 0 10 * * *
      vault_section = "gcp-warehouse-db2"
    },
    {
      name = "ar-prompt-filing-job"
      trigger = "ar-prompt-filing-notebook"
-     cron = "00 06 * * *"
+     cron = 00 06 * * *
      vault_section = "gcp-warehouse-db2"
    },
    {
      name = "registry-monthly-stats-job"
      trigger = "registry-monthly-stats-notebook"
-     cron = "0 12 * * *"
-     vault_section = "gcp-warehouse-db2"
+     cron = 0 12 * * *
+     vault_section = "gcp-warehouse-db2"
    },
    {
      name = "bn-processing-batch-job"
      trigger = "bn-processing-batch-notebook"
-     cron = "00 06 * * *"
+     cron = 00 06 * * *
      vault_section = "gcp-warehouse-db2"
    },
   ]
