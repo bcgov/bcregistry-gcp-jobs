@@ -54,7 +54,7 @@ jobs:
               case $var_name in
               CRON_SCHEDULE)
                 echo -n "     cron = " >> new_variables.tf
-                echo "${var_value}" >> new_variables.tf
+                echo "\"${var_value}\"" >> new_variables.tf
                 ;;
               VAULT)
                 echo -n "     vault_section = " >> new_variables.tf
