@@ -50,6 +50,7 @@ jobs:
             while read -r env_var || [ -n "$env_var" ]
             do
               IFS="=" read -r var_name var_value <<< "${env_var}"
+              env_var=$(echo "$env_var" | tr -d '\r' | xargs)
               case $var_name in
               CRON_SCHEDULE)
                 echo -n "     cron = " >> new_variables.tf
