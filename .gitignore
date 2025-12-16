@@ -86,6 +86,10 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+<<<<<<< HEAD
+=======
+#.env
+>>>>>>> 5b012cf (changing the query for ar sync email)
 
 # gcp sa keys
 *.json
