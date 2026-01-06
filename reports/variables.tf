@@ -96,7 +96,7 @@ variable "jobs" {
    {
      name = "registry-monthly-stats-job"
      trigger = "registry-monthly-stats-notebook"
-     cron = "0 12 * * *"
+     cron = "0 7 5 * *"
      vault_section = "gcp-warehouse-db2"
    },
    {
