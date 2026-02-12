@@ -10,15 +10,19 @@ on:
         type: string
         required: true
     secrets:
-      GCP_SA_KEY:
-        required: true
       OP_CONNECT_TOKEN:
         required: true
       OP_CONNECT_HOST:
         required: true
+      # WIF secrets instead of SA key
+      GCP_WORKLOAD_PROVIDER:
+        required: true
+      GCP_SERVICE_ACCOUNT_EMAIL:
+        required: true
+
 permissions:
   contents: read
-  id-token: write
+  id-token: write   # required for WIF
 
 jobs:
   terraform:
@@ -38,9 +42,10 @@ jobs:
 
     - name: Authenticate to Google Cloud
       id: auth
-      uses: google-github-actions/auth@v1
+      uses: google-github-actions/auth@v2
       with:
-        credentials_json: ${{ secrets.GCP_SA_KEY }}
+        workload_identity_provider: ${{ secrets.GCP_WORKLOAD_PROVIDER }}
+        service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
         create_credentials_file: true
         export_environment_variables: true
         access_token_lifetime: 3600s
@@ -65,7 +70,6 @@ jobs:
 
     - name: Clear Terraform cache
       run: |
-        # Remove all cached Terraform files
         rm -rf ~/.terraform.d/
         rm -rf ~/.terraformrc
         rm -rf .terraform/
@@ -83,12 +87,14 @@ jobs:
       env:
         OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
         OP_CONNECT_HOST: ${{ secrets.OP_CONNECT_HOST }}
+
     - name: Terraform Plan
       working-directory: ${{ inputs.gcp_job }}
       run: terraform plan -input=false
       env:
         OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
         OP_CONNECT_HOST: ${{ secrets.OP_CONNECT_HOST }}
+
     - name: Terraform Apply
       working-directory: ${{ inputs.gcp_job }}
       run: terraform apply -auto-approve -input=false

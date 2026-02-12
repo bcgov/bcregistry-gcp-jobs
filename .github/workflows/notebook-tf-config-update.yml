@@ -107,6 +107,7 @@ jobs:
       gcp_job: reports
       gcp_env: prod
     secrets:
-      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+      GCP_WORKLOAD_PROVIDER: ${{ secrets.GCP_WORKLOAD_PROVIDER }}
+      GCP_SERVICE_ACCOUNT_EMAIL: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
       OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
       OP_CONNECT_HOST: ${{ secrets.OP_CONNECT_HOST }}
