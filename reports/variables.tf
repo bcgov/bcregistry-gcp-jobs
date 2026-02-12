@@ -76,12 +76,6 @@ variable "jobs" {
      vault_section = "gcp-warehouse-db2"
    },
    {
-     name = "phishing-scan-job"
-     trigger = "phishing-scan-notebook"
-     cron = "0 3 * * *"
-     custom_vars = ["GOOGLE_API_KEY","BING_API_KEY","BING_ID","VIRUS_TOTAL_API_KEY",]
-   },
-   {
      name = "worksafe-job"
      trigger = "worksafe-notebook"
      cron = "0 10 * * *"
