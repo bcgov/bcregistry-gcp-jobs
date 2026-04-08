@@ -66,7 +66,7 @@ variable "jobs" {
    {
      name = "ar-prompt-filing-job"
      trigger = "ar-prompt-filing-notebook"
-     cron = "*/5 * * * *"
+     cron = "00 06 * * *"
      vault_section = "gcp-warehouse-db2"
    },
    {
