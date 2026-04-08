@@ -126,8 +126,7 @@ resource "google_cloud_scheduler_job" "scheduler" {
     http_method = "POST"
     uri         = "https://${var.region}-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/${var.environment.project_id}/jobs/${each.value.name}:run"
     oauth_token {
-      service_account_email = "${var.environment.sa}@${var.environment.project_id}.iam.gserviceaccount.com"
-      scope = "https://www.googleapis.com/auth/cloud-platform"
+      service_account_email = "sa-notebook@${var.environment.project_id}.iam.gserviceaccount.com"
     }
   }
 }
